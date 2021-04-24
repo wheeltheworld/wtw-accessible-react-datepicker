@@ -32,8 +32,7 @@ export const generateMonthCalendar = (date: Date): Result => {
   const year = date.getFullYear();
   const month = date.getMonth();
   const weekDay = date.getDay();
-  console.log(weekDay);
-
+  const day = date.getDate();
   const days: number[] = [];
 
   // Add all the days of the month
@@ -41,8 +40,12 @@ export const generateMonthCalendar = (date: Date): Result => {
     days.push(i);
   }
   // Add missing days at the beggining of the calendar
-  for (let i = 0; i < weekDay; i++) {
-    days.unshift(maxDate(year)[month - 1] - i);
+  let missingSpots = 8 - ((day - weekDay) % 7);
+  while (missingSpots >= 7) {
+    missingSpots -= 7;
+  }
+  for (let i = 0; i < missingSpots; i++) {
+    days.unshift(maxDate(year)[month === 0 ? 11 : month - 1] - i);
   }
 
   // We traverse the array so we can create the matrix
@@ -55,15 +58,14 @@ export const generateMonthCalendar = (date: Date): Result => {
     }
     currentRow.push(days[i]);
   }
-
   // We add the missing dates at the end of the calendar
   if (currentRow.length) {
-    for (let i = 1; i < 7 - (currentRow.length - 1); i++) {
+    const missing = 8 - currentRow.length;
+    for (let i = 1; i < missing; i++) {
       currentRow.push(i);
     }
     calendar.push(currentRow);
   }
-  console.log(calendar);
   return {
     month,
     calendar: calendar as Tuple<number, 7>[],

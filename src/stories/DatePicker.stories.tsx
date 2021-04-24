@@ -1,6 +1,6 @@
 import React from "react";
 import { Meta, Story } from "@storybook/react";
-import Datepicker from "../own/DatePicker";
+import Datepicker from "../DatePicker";
 
 export default {
   title: "Atoms/DatePicker",

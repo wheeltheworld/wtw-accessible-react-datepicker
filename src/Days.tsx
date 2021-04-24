@@ -1,9 +1,11 @@
 import React, { useMemo } from "react";
 import styled from "styled-components";
 import { generateMonthCalendar } from "./generateCalendar";
+import { Day as IDay } from "./types";
 
 interface DaysProps {
   date: Date;
+  onSelect: (day: IDay) => void;
 }
 
 const Grid = styled.div`
@@ -25,17 +27,29 @@ const Day = styled.button`
   }
 `;
 
-const Days: React.FC<DaysProps> = ({ date }) => {
+const Days: React.FC<DaysProps> = ({ date, onSelect }) => {
   const calendar = useMemo(() => generateMonthCalendar(date), [date]);
-  console.log(calendar);
   return (
     <Grid>
+      {[0, 1, 2, 3, 4, 5]}
       {calendar.calendar.map((row, i) =>
         row.map((day) => {
           const disabled =
-            (i === 0 && day > 7) || (i === row.length - 1 && i < 7);
+            (i === 0 && day > 7) ||
+            (i === calendar.calendar.length - 1 && day < 7);
           return (
-            <Day key={day} disabled={disabled} aria-disabled={disabled}>
+            <Day
+              key={day}
+              disabled={disabled}
+              aria-disabled={disabled}
+              onClick={() =>
+                onSelect({
+                  day,
+                  month: date.getMonth(),
+                  year: date.getFullYear(),
+                })
+              }
+            >
               {day}
             </Day>
           );

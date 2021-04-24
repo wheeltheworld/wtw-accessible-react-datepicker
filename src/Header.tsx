@@ -10,7 +10,7 @@ interface HeaderProps {
 
 const Container = styled.div`
   display: flex;
-  justifycontent: space-between;
+  justify-content: space-between;
 `;
 
 const Header: React.FC<HeaderProps> = ({ months, onNext, onPrevious }) => {

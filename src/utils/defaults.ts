@@ -16,11 +16,11 @@ export const months: Tuple<string, 12> = [
 ];
 
 export const days: Tuple<string, 7> = [
-  "mon",
-  "tue",
-  "wed",
-  "thu",
-  "fri",
-  "sat",
-  "sun",
+  "Su",
+  "Mo",
+  "Tu",
+  "We",
+  "Th",
+  "Fr",
+  "Sa",
 ];

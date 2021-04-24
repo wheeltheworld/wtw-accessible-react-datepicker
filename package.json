@@ -9,8 +9,12 @@
     "accessibility",
     "calendar"
   ],
-  "main": "build/index.js",
+  "main": "index.js",
+  "module": "index.esm.js",
+  "types": "index.d.ts",
   "scripts": {
+    "build": "yarn clean && rollup -c",
+    "clean": "rimraf dist",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
@@ -25,8 +29,8 @@
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.13.16",
-    "@rollup/plugin-commonjs": "^18.0.0",
-    "@rollup/plugin-node-resolve": "^11.2.1",
+    "@rollup/plugin-commonjs": "^16.0.0",
+    "@rollup/plugin-node-resolve": "^10.0.0",
     "@storybook/addon-actions": "^6.2.8",
     "@storybook/addon-essentials": "^6.2.8",
     "@storybook/addon-links": "^6.2.8",
@@ -40,12 +44,13 @@
     "jest": "^26.6.3",
     "react": "^17.0.2",
     "react-ada-keyboard-accessible-datepicker": "^1.2.13",
-    "rollup": "^2.45.2",
-    "rollup-plugin-copy": "^3.4.0",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.33.3",
+    "rollup-plugin-copy": "^3.3.0",
     "rollup-plugin-terser": "^7.0.2",
-    "rollup-plugin-typescript": "^1.0.1",
+    "rollup-plugin-typescript2": "^0.29.0",
     "ts-jest": "^26.5.5",
-    "typescript": "^4.2.4",
+    "typescript": "^4.2.3",
     "wtw-icons": "^1.13.0"
   },
   "dependencies": {
