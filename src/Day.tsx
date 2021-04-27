@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import styled from "styled-components";
-import { Day as IDay, Tuple } from "./types";
+import { Day as IDay, StyleConfig, Tuple } from "./types";
 import { generateButtonId } from "./utils/funcs/generateButtonId";
 import { isBetween } from "./utils/funcs/isBetween";
 import { isSelected } from "./utils/funcs/isSelected";
@@ -8,9 +8,10 @@ import { isSelected } from "./utils/funcs/isSelected";
 const Circle = styled.div<{
   selected?: boolean;
   disabled?: boolean;
+  styles: StyleConfig;
 }>`
   border: none;
-  color: #232323;
+  color: ${({ styles }) => styles.normal};
   background: none;
   border-radius: 100%;
   width: 44px;
@@ -20,20 +21,20 @@ const Circle = styled.div<{
   font-weight: 600;
   border: 1px solid transparent;
 
-  ${({ disabled }) =>
+  ${({ disabled, styles }) =>
     disabled
       ? `
-      color: #949494;
+      color: ${styles.disabled};
 
       `
       : `&:hover {
-        border: 1px solid #2f6fe4;
+        border: 1px solid ${styles.selected};
       }`}
 
-  ${({ selected }) =>
+  ${({ selected, styles }) =>
     selected
       ? `
-         background-color: #2F6FE4;
+         background-color: ${styles.selected};
          color: white;
       `
       : ""};
@@ -43,26 +44,27 @@ const DayContainer = styled.div<{
   selected?: boolean;
   right?: boolean;
   between?: boolean;
+  color: string;
 }>`
-  ${({ selected, right }) =>
+  ${({ selected, right, color }) =>
     selected
       ? `
     background: linear-gradient(${
       right ? "" : "-"
-    }90deg, #D5E2FA 0%, #D5E2FA 50%, white 50%, white 100%);
+    }90deg, ${color} 0%, ${color} 50%, white 50%, white 100%);
 `
       : ""}
 
-  ${({ between }) =>
+  ${({ between, color }) =>
     between
       ? `
-    background-color: #D5E2FA; 
+    background-color: ${color} ;
     border-radius: 0;
   `
       : ""}
 `;
 
-const Clickable = styled.button<{ selected: boolean }>`
+const Clickable = styled.button<{ selected: boolean; color: string }>`
   background: none;
   border: none;
   height: 100%;
@@ -70,10 +72,10 @@ const Clickable = styled.button<{ selected: boolean }>`
   outline: none;
   cursor: pointer;
 
-  ${({ selected }) =>
+  ${({ selected, color }) =>
     !selected
       ? `&:focus .day {
-        border: 1px solid #2f6fe4;
+        border: 1px solid ${color};
   }`
       : ``}
 `;
@@ -90,6 +92,7 @@ interface DayProps {
   setHover: (day: IDay | null) => void;
   setFocusable: (id: string) => void;
   months: Tuple<string, 12>;
+  styles: StyleConfig;
 }
 
 const Day: React.FC<DayProps> = ({
@@ -104,6 +107,7 @@ const Day: React.FC<DayProps> = ({
   handleKey,
   months,
   setFocusable,
+  styles,
 }) => {
   const curr = useMemo(
     () => ({
@@ -156,6 +160,7 @@ const Day: React.FC<DayProps> = ({
         isDaySelected || (!!selected[0] && !selected[1] && isDayHovered)
       }
       id={generateButtonId({ day, month, year })}
+      color={styles.selected}
     >
       <DayContainer
         key={day}
@@ -165,6 +170,7 @@ const Day: React.FC<DayProps> = ({
         }
         right={isRight || isRightHover}
         between={isDayBetween}
+        color={styles.between}
       >
         <Circle
           selected={
@@ -172,6 +178,7 @@ const Day: React.FC<DayProps> = ({
           }
           disabled={disabled}
           className='day'
+          styles={styles}
         >
           {day}
         </Circle>

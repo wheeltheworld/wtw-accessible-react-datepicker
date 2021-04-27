@@ -1,9 +1,9 @@
 import React, { useCallback, useMemo, useState } from "react";
 import styled from "styled-components";
 import Calendar from "./Calendar";
-import { months as defaultMonths } from "./utils/defaults";
+import { months as defaultMonths, days as defaultDays } from "./utils/defaults";
 import Header from "./Header";
-import { Tuple } from "./types";
+import { StyleConfig, Tuple } from "./types";
 import { useDateSelector } from "./utils/hooks/useDateSelector";
 import FocusTrap from "focus-trap-react";
 
@@ -35,12 +35,13 @@ const Close = styled.button`
   padding: 9px 25px;
 `;
 
-interface DatePickerProps {
+export interface DatePickerProps {
   isOpen: boolean;
   handleToggle: () => void;
   months?: Tuple<string, 12>;
   days?: Tuple<string, 7>;
   dateSelector: ReturnType<typeof useDateSelector>;
+  styles: StyleConfig;
 }
 
 const DatePicker: React.FC<DatePickerProps> = ({
@@ -54,6 +55,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
     focusable,
     setFocusable,
   },
+  styles,
   ...props
 }) => {
   const [date, setDate] = useState(new Date());
@@ -66,6 +68,8 @@ const DatePicker: React.FC<DatePickerProps> = ({
   }, [date]);
 
   const months = useMemo(() => props.months || defaultMonths, [props.months]);
+
+  const days = useMemo(() => props.days || defaultDays, [props.days]);
 
   const currentMonths = useMemo((): Tuple<string, 2> => {
     const month = date.getMonth();
@@ -99,8 +103,18 @@ const DatePicker: React.FC<DatePickerProps> = ({
           onPrevious={onPrevious}
         />
         <Flex>
-          <Calendar date={date} {...commonCalendar} />
-          <Calendar date={secondDate} {...commonCalendar} />
+          <Calendar
+            date={date}
+            {...commonCalendar}
+            styles={styles}
+            days={days}
+          />
+          <Calendar
+            date={secondDate}
+            {...commonCalendar}
+            styles={styles}
+            days={days}
+          />
         </Flex>
         <Close onClick={handleToggle}>Close</Close>
       </Container>

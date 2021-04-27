@@ -7,3 +7,10 @@ export interface Day {
   day: number;
   year: number;
 }
+
+export interface StyleConfig {
+  selected: string;
+  between: string;
+  disabled: string;
+  normal: string;
+}

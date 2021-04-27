@@ -1,6 +1,6 @@
 import React from "react";
 import { Meta, Story } from "@storybook/react";
-import Datepicker from "../DatePicker";
+import Datepicker, { DatePickerProps } from "../DatePicker";
 import { useDateSelector } from "../utils/hooks/useDateSelector";
 import { useToggle } from "../utils/hooks/useToggle";
 
@@ -9,7 +9,7 @@ export default {
   component: Datepicker,
 } as Meta;
 
-const Template: Story<any> = (args) => {
+const Template: Story<DatePickerProps> = (args) => {
   const [open, toggle] = useToggle(true);
   const dateSelector = useDateSelector();
   return (
@@ -34,4 +34,11 @@ const Template: Story<any> = (args) => {
 };
 
 export const Default = Template.bind({});
-Default.args = {};
+Default.args = {
+  styles: {
+    disabled: "#949494",
+    normal: "#232323",
+    between: "#D5E2FA",
+    selected: "#2F6FE4",
+  },
+};

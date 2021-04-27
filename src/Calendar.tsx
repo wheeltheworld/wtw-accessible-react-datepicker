@@ -1,8 +1,7 @@
 import React, { useMemo } from "react";
 import styled from "styled-components";
 import { generateMonthCalendar } from "./utils/funcs/generateCalendar";
-import { Day as IDay, Tuple } from "./types";
-import { days } from "./utils/defaults";
+import { Day as IDay, StyleConfig, Tuple } from "./types";
 import { generateButtonId } from "./utils/funcs/generateButtonId";
 import Day from "./Day";
 import {
@@ -22,12 +21,14 @@ const Keys = {
 interface DaysProps {
   date: Date;
   months: Tuple<string, 12>;
+  days: Tuple<string, 7>;
   onSelect: (day: IDay) => void;
   selected: Tuple<IDay | null, 2>;
   hover: IDay | null;
   setHover: (day: IDay | null) => void;
   focusable: string;
   setFocusable: (str: string) => void;
+  styles: StyleConfig;
 }
 
 const Grid = styled.div`
@@ -36,8 +37,8 @@ const Grid = styled.div`
   place-items: center;
 `;
 
-const WeekDay = styled.p`
-  color: #949494;
+const WeekDay = styled.p<{ color: string }>`
+  color: ${({ color }) => color};
 `;
 
 const Calendar: React.FC<DaysProps> = ({
@@ -49,6 +50,8 @@ const Calendar: React.FC<DaysProps> = ({
   hover,
   focusable,
   setFocusable,
+  days,
+  styles,
 }) => {
   const calendar = useMemo(() => generateMonthCalendar(date), [date]);
   const month = useMemo(() => calendar.month, [calendar]);
@@ -90,12 +93,15 @@ const Calendar: React.FC<DaysProps> = ({
     <div role='grid' aria-label={`${months[month]}'s calendar`}>
       <Grid>
         {days.map((day) => (
-          <WeekDay key={day}>{day}</WeekDay>
+          <WeekDay key={day} color={styles.disabled}>
+            {day}
+          </WeekDay>
         ))}
       </Grid>
       <Grid>
         {calendar.calendar.map((day, i) => (
           <Day
+            styles={styles}
             months={months}
             year={year}
             month={month}
