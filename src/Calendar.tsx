@@ -36,6 +36,10 @@ const Grid = styled.div`
   place-items: center;
 `;
 
+const WeekDay = styled.p`
+  color: #949494;
+`;
+
 const Calendar: React.FC<DaysProps> = ({
   date,
   onSelect,
@@ -86,28 +90,26 @@ const Calendar: React.FC<DaysProps> = ({
     <div role='grid' aria-label={`${months[month]}'s calendar`}>
       <Grid>
         {days.map((day) => (
-          <p key={day}>{day}</p>
+          <WeekDay key={day}>{day}</WeekDay>
         ))}
       </Grid>
       <Grid>
-        {calendar.calendar.map((row) =>
-          row.map((day, j) => (
-            <Day
-              months={months}
-              year={year}
-              month={month}
-              day={day}
-              key={j + generateButtonId({ day, month, year })}
-              focusable={focusable}
-              handleKey={handleKey}
-              onSelect={onSelect}
-              setHover={setHover}
-              setFocusable={setFocusable}
-              hover={hover}
-              selected={selected}
-            />
-          ))
-        )}
+        {calendar.calendar.map((day, i) => (
+          <Day
+            months={months}
+            year={year}
+            month={month}
+            day={day}
+            key={i + generateButtonId({ day, month, year })}
+            focusable={focusable}
+            handleKey={handleKey}
+            onSelect={onSelect}
+            setHover={setHover}
+            setFocusable={setFocusable}
+            hover={hover}
+            selected={selected}
+          />
+        ))}
       </Grid>
     </div>
   );

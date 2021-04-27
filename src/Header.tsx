@@ -22,6 +22,16 @@ const Button = styled.button`
   height: fit-content;
   padding: 10px;
   cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  outline: none;
+  border: 1px solid transparent;
+
+  &:hover,
+  &:focus {
+    border: 1px solid #2f6fe4;
+  }
 `;
 
 const Month = styled.p`

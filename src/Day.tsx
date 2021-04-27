@@ -7,10 +7,10 @@ import { isSelected } from "./utils/funcs/isSelected";
 
 const Circle = styled.div<{
   selected?: boolean;
-  between?: boolean;
-  isFocus: boolean;
+  disabled?: boolean;
 }>`
   border: none;
+  color: #232323;
   background: none;
   border-radius: 100%;
   width: 44px;
@@ -19,9 +19,17 @@ const Circle = styled.div<{
   place-items: center;
   font-weight: 600;
   border: 1px solid transparent;
-  &:hover {
-    border: 1px solid #2f6fe4;
-  }
+
+  ${({ disabled }) =>
+    disabled
+      ? `
+      color: #949494;
+
+      `
+      : `&:hover {
+        border: 1px solid #2f6fe4;
+      }`}
+
   ${({ selected }) =>
     selected
       ? `
@@ -65,7 +73,7 @@ const Clickable = styled.button<{ selected: boolean }>`
   ${({ selected }) =>
     !selected
       ? `&:focus .day {
-    background-color: lightgray;
+        border: 1px solid #2f6fe4;
   }`
       : ``}
 `;
@@ -162,7 +170,7 @@ const Day: React.FC<DayProps> = ({
           selected={
             isDaySelected || (!!selected[0] && !selected[1] && isDayHovered)
           }
-          isFocus={focusable === id}
+          disabled={disabled}
           className='day'
         >
           {day}

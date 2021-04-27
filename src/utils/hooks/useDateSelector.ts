@@ -31,6 +31,16 @@ export const useDateSelector = () => {
     setSelected([selected[0], day]);
   };
 
+  /**
+   * Will clear the dates when called
+   * @param onlySecond if true will only clear the second date
+   */
+  const clearDates = (onlySecond = false) => {
+    if (onlySecond) return setSelected([selected[0], null]);
+
+    setSelected([null, null]);
+  };
+
   return {
     selected,
     addDate,
@@ -38,5 +48,6 @@ export const useDateSelector = () => {
     setHovered,
     focusable,
     setFocusable,
+    clearDates,
   } as const;
 };

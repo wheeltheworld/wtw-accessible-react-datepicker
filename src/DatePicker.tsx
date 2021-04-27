@@ -13,6 +13,7 @@ const Container = styled.div`
   padding 17px 25px;
   display: flex;
   flex-direction: column;
+  max-width: 700px;
 
   & > * {
     font-family: sans-serif;
@@ -31,6 +32,7 @@ const Close = styled.button`
   cursor: pointer;
   align-self: flex-end;
   font-size: 16px;
+  padding: 9px 25px;
 `;
 
 interface DatePickerProps {
@@ -38,23 +40,23 @@ interface DatePickerProps {
   handleToggle: () => void;
   months?: Tuple<string, 12>;
   days?: Tuple<string, 7>;
+  dateSelector: ReturnType<typeof useDateSelector>;
 }
 
 const DatePicker: React.FC<DatePickerProps> = ({
   isOpen,
   handleToggle,
-  ...props
-}) => {
-  const [date, setDate] = useState(new Date());
-  const {
+  dateSelector: {
     selected,
     addDate,
     hovered,
     setHovered,
     focusable,
     setFocusable,
-  } = useDateSelector();
-
+  },
+  ...props
+}) => {
+  const [date, setDate] = useState(new Date());
   const onNext = useCallback(() => {
     setDate(new Date(date.getFullYear(), date.getMonth() + 1, date.getDate()));
   }, [date]);
