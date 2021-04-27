@@ -1,19 +1,36 @@
 import React, { useCallback, useMemo, useState } from "react";
 import styled from "styled-components";
-import Days from "./Days";
+import Calendar from "./Calendar";
 import { months as defaultMonths } from "./utils/defaults";
 import Header from "./Header";
 import { Tuple } from "./types";
 import { useDateSelector } from "./utils/hooks/useDateSelector";
+import FocusTrap from "focus-trap-react";
 
 const Container = styled.div`
   border-radius: 10px;
   border: 1px solid black;
+  padding 17px 25px;
+  display: flex;
+  flex-direction: column;
+
+  & > * {
+    font-family: sans-serif;
+  }
 `;
 
 const Flex = styled.div`
   display: flex;
   justify-content: space-between;
+`;
+
+const Close = styled.button`
+  text-decoration: underline;
+  background: none;
+  border: none;
+  cursor: pointer;
+  align-self: flex-end;
+  font-size: 16px;
 `;
 
 interface DatePickerProps {
@@ -29,7 +46,14 @@ const DatePicker: React.FC<DatePickerProps> = ({
   ...props
 }) => {
   const [date, setDate] = useState(new Date());
-  const [_selected, addDate] = useDateSelector();
+  const {
+    selected,
+    addDate,
+    hovered,
+    setHovered,
+    focusable,
+    setFocusable,
+  } = useDateSelector();
 
   const onNext = useCallback(() => {
     setDate(new Date(date.getFullYear(), date.getMonth() + 1, date.getDate()));
@@ -44,8 +68,8 @@ const DatePicker: React.FC<DatePickerProps> = ({
   const currentMonths = useMemo((): Tuple<string, 2> => {
     const month = date.getMonth();
     return [
-      months[month] + date.getFullYear(),
-      months[month === 11 ? 0 : month + 1] + date.getFullYear(),
+      `${months[month]} ${date.getFullYear()}`,
+      `${months[month === 11 ? 0 : month + 1]} ${date.getFullYear()}`,
     ];
   }, [months, date]);
 
@@ -53,16 +77,34 @@ const DatePicker: React.FC<DatePickerProps> = ({
     () => new Date(date.getFullYear(), date.getMonth() + 1, date.getDate()),
     [date]
   );
+
+  const commonCalendar = {
+    onSelect: addDate,
+    months: months,
+    selected: selected,
+    hover: hovered,
+    setHover: setHovered,
+    focusable: focusable,
+    setFocusable: setFocusable,
+  };
+
   return isOpen ? (
-    <Container>
-      <Header months={currentMonths} onNext={onNext} onPrevious={onPrevious} />
-      <Flex>
-        <Days date={date} onSelect={addDate} />
-        <Days date={secondDate} onSelect={addDate} />
-      </Flex>
-    </Container>
+    <FocusTrap>
+      <Container role='dialog'>
+        <Header
+          months={currentMonths}
+          onNext={onNext}
+          onPrevious={onPrevious}
+        />
+        <Flex>
+          <Calendar date={date} {...commonCalendar} />
+          <Calendar date={secondDate} {...commonCalendar} />
+        </Flex>
+        <Close onClick={handleToggle}>Close</Close>
+      </Container>
+    </FocusTrap>
   ) : (
-    <></>
+    <> </>
   );
 };
 

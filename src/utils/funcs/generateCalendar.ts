@@ -1,25 +1,8 @@
-import { Tuple } from "./types";
+import { Tuple } from "../../types";
+import { maxDate } from "../consts";
+import { generateDay } from "./generateDay";
 
-const isLeapYear = (year: number) => {
-  return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
-};
-
-const maxDate = (year: number): Tuple<number, 12> => [
-  31,
-  isLeapYear(year) ? 29 : 28,
-  31,
-  30,
-  31,
-  30,
-  31,
-  31,
-  30,
-  31,
-  30,
-  31,
-];
-
-interface Result {
+interface Calendar {
   month: number;
   calendar: Tuple<number, 7>[];
 }
@@ -28,11 +11,9 @@ interface Result {
  * Will return a 2d array with the values of the calendar of a specific month
  * @param date a date with the month to get the calendar
  */
-export const generateMonthCalendar = (date: Date): Result => {
-  const year = date.getFullYear();
-  const month = date.getMonth();
+export const generateMonthCalendar = (date: Date): Calendar => {
+  const { year, month, day } = generateDay(date);
   const weekDay = date.getDay();
-  const day = date.getDate();
   const days: number[] = [];
 
   // Add all the days of the month
@@ -45,7 +26,7 @@ export const generateMonthCalendar = (date: Date): Result => {
     missingSpots -= 7;
   }
   for (let i = 0; i < missingSpots; i++) {
-    days.unshift(maxDate(year)[month === 0 ? 11 : month - 1] - i);
+    days.unshift(-1);
   }
 
   // We traverse the array so we can create the matrix
@@ -62,7 +43,7 @@ export const generateMonthCalendar = (date: Date): Result => {
   if (currentRow.length) {
     const missing = 8 - currentRow.length;
     for (let i = 1; i < missing; i++) {
-      currentRow.push(i);
+      currentRow.push(-1);
     }
     calendar.push(currentRow);
   }

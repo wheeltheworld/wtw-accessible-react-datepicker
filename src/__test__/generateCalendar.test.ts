@@ -1,4 +1,4 @@
-import { generateMonthCalendar } from "../generateCalendar";
+import { generateMonthCalendar } from "../utils/funcs/generateCalendar";
 
 describe("generateMonthCalendar()", () => {
   it("should return the correct calendar with some date", () => {

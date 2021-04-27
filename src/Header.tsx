@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { Tuple } from "./types";
 
+import { NextIcon } from "wtw-icons/icons";
+
 interface HeaderProps {
   months: Tuple<string, 2>;
   onNext: () => void;
@@ -13,13 +15,33 @@ const Container = styled.div`
   justify-content: space-between;
 `;
 
+const Button = styled.button`
+  border: none;
+  background: none;
+  color: black;
+  height: fit-content;
+  padding: 10px;
+  cursor: pointer;
+`;
+
+const Month = styled.p`
+  font-weight: 600;
+  margin: 0;
+  display: grid;
+  place-items: center;
+`;
+
 const Header: React.FC<HeaderProps> = ({ months, onNext, onPrevious }) => {
   return (
     <Container>
-      <button onClick={onPrevious}>{"<"}</button>
-      <p>{months[0]}</p>
-      <p>{months[1]}</p>
-      <button onClick={onNext}>{">"}</button>
+      <Button onClick={onPrevious} aria-label='Previous pair of months'>
+        {"<"}
+      </Button>
+      <Month aria-live='polite'>{months[0]}</Month>
+      <Month aria-live='polite'>{months[1]}</Month>
+      <Button onClick={onNext} aria-label='Next pair of months'>
+        <NextIcon width='15px' height='15px' />
+      </Button>
     </Container>
   );
 };
