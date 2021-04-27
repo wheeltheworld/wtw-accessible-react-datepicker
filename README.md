@@ -1,4 +1,4 @@
-# React-ADA-Keyboard-Accessible-Datepicker
+# WTW-Accessible-React-Datepicker
 
 WTW-Accessible-React-Datepicker is a datepicker that shows 2 calendars at the time, keeping the accessibility as a focus, following the WAI standards ( https://www.w3.org/TR/wai-aria-practices/examples/dialog-modal/datepicker-dialog.html ).
 
