@@ -1,6 +1,6 @@
 {
   "name": "wtw-accessible-react-datepicker",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A accessible datepicker with all the keyboard bindings, compatible with React",
   "keywords": [
     "datepicker",
@@ -16,7 +16,8 @@
     "build": "yarn clean && rollup -c",
     "clean": "rimraf dist",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "test": "jest --verbose --coverage"
   },
   "repository": {
     "type": "git",
