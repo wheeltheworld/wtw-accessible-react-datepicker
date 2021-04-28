@@ -29,6 +29,8 @@ interface DaysProps {
   focusable: string;
   setFocusable: (str: string) => void;
   styles: StyleConfig;
+  minDate?: Date;
+  maxDate?: Date;
 }
 
 const Grid = styled.div`
@@ -52,6 +54,8 @@ const Calendar: React.FC<DaysProps> = ({
   setFocusable,
   days,
   styles,
+  minDate,
+  maxDate,
 }) => {
   const calendar = useMemo(() => generateMonthCalendar(date), [date]);
   const month = useMemo(() => calendar.month, [calendar]);
@@ -114,6 +118,8 @@ const Calendar: React.FC<DaysProps> = ({
             setFocusable={setFocusable}
             hover={hover}
             selected={selected}
+            minDate={minDate}
+            maxDate={maxDate}
           />
         ))}
       </Grid>

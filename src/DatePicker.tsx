@@ -6,17 +6,23 @@ import Header from "./Header";
 import { StyleConfig, Tuple } from "./types";
 import { useDateSelector } from "./utils/hooks/useDateSelector";
 import FocusTrap from "focus-trap-react";
-
-const Container = styled.div`
+const Container = styled.div<{
+  background: string;
+  custom?: string;
+  font: string;
+}>`
   border-radius: 10px;
   border: 1px solid black;
   padding 17px 25px;
   display: flex;
   flex-direction: column;
   max-width: 700px;
+  position: absolute;
+  background-color: ${({ background }) => background}
+  ${({ custom }) => custom || ""}
 
   & > * {
-    font-family: sans-serif;
+    font-family: ${({ font }) => font};
   }
 `;
 
@@ -38,10 +44,12 @@ const Close = styled.button`
 export interface DatePickerProps {
   isOpen: boolean;
   handleToggle: () => void;
-  months?: Tuple<string, 12>;
-  days?: Tuple<string, 7>;
   dateSelector: ReturnType<typeof useDateSelector>;
   styles: StyleConfig;
+  months?: Tuple<string, 12>;
+  days?: Tuple<string, 7>;
+  minDate?: Date;
+  maxDate?: Date;
 }
 
 const DatePicker: React.FC<DatePickerProps> = ({
@@ -56,6 +64,8 @@ const DatePicker: React.FC<DatePickerProps> = ({
     setFocusable,
   },
   styles,
+  minDate,
+  maxDate,
   ...props
 }) => {
   const [date, setDate] = useState(new Date());
@@ -95,8 +105,13 @@ const DatePicker: React.FC<DatePickerProps> = ({
   };
 
   return isOpen ? (
-    <FocusTrap>
-      <Container role='dialog'>
+    <FocusTrap focusTrapOptions={{ allowOutsideClick: true }}>
+      <Container
+        {...styles}
+        role='dialog'
+        background={styles.background}
+        font={styles.font}
+      >
         <Header
           months={currentMonths}
           onNext={onNext}
@@ -108,12 +123,16 @@ const DatePicker: React.FC<DatePickerProps> = ({
             {...commonCalendar}
             styles={styles}
             days={days}
+            minDate={minDate}
+            maxDate={maxDate}
           />
           <Calendar
             date={secondDate}
             {...commonCalendar}
             styles={styles}
             days={days}
+            minDate={minDate}
+            maxDate={maxDate}
           />
         </Flex>
         <Close onClick={handleToggle}>Close</Close>

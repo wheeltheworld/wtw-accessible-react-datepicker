@@ -14,6 +14,7 @@ const Template: Story<DatePickerProps> = (args) => {
   const dateSelector = useDateSelector();
   return (
     <>
+      <input type='text' />
       {dateSelector.selected[0] && (
         <p>
           Selected from {dateSelector.selected[0].day}/
@@ -40,5 +41,9 @@ Default.args = {
     normal: "#232323",
     between: "#D5E2FA",
     selected: "#2F6FE4",
+    background: "white",
+    font: "sans-serif",
   },
+  minDate: new Date(),
+  maxDate: new Date(2021, 4, 21),
 };

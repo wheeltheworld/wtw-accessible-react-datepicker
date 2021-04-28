@@ -25,6 +25,7 @@ const Circle = styled.div<{
     disabled
       ? `
       color: ${styles.disabled};
+      text-decoration: line-through;
 
       `
       : `&:hover {
@@ -93,6 +94,8 @@ interface DayProps {
   setFocusable: (id: string) => void;
   months: Tuple<string, 12>;
   styles: StyleConfig;
+  minDate?: Date;
+  maxDate?: Date;
 }
 
 const Day: React.FC<DayProps> = ({
@@ -108,6 +111,8 @@ const Day: React.FC<DayProps> = ({
   months,
   setFocusable,
   styles,
+  minDate,
+  maxDate,
 }) => {
   const curr = useMemo(
     () => ({
@@ -117,10 +122,16 @@ const Day: React.FC<DayProps> = ({
     }),
     []
   );
-  const disabled = useMemo(
-    () => new Date(year, month, day + 1) < new Date(),
-    []
-  );
+  const disabled = useMemo(() => {
+    if (minDate) {
+      if (minDate > new Date(year, month, day)) return true;
+    }
+    if (maxDate) {
+      if (maxDate < new Date(year, month, day)) return true;
+    }
+
+    return false;
+  }, [minDate, maxDate]);
 
   const [isDaySelected, isRightHover] = useMemo(
     () => isSelected(selected, curr),
@@ -161,6 +172,7 @@ const Day: React.FC<DayProps> = ({
       }
       id={generateButtonId({ day, month, year })}
       color={styles.selected}
+      type='button'
     >
       <DayContainer
         key={day}

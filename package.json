@@ -45,7 +45,6 @@
     "babel-loader": "^8.2.2",
     "jest": "^26.6.3",
     "react": "^17.0.2",
-    "react-ada-keyboard-accessible-datepicker": "^1.2.13",
     "rimraf": "^3.0.2",
     "rollup": "^2.33.3",
     "rollup-plugin-copy": "^3.3.0",
