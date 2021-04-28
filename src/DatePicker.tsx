@@ -5,8 +5,7 @@ import { months as defaultMonths, days as defaultDays } from "./utils/defaults";
 import Header from "./Header";
 import { StyleConfig, Tuple } from "./types";
 import { useDateSelector } from "./utils/hooks/useDateSelector";
-import ReactFocusLock from "react-focus-lock";
-
+import FocusTrap from "focus-trap-react";
 const Container = styled.div<{
   background: string;
   custom?: string;
@@ -106,8 +105,13 @@ const DatePicker: React.FC<DatePickerProps> = ({
   };
 
   return isOpen ? (
-    <ReactFocusLock>
-      <Container {...styles} role='dialog'>
+    <FocusTrap focusTrapOptions={{ allowOutsideClick: true }}>
+      <Container
+        {...styles}
+        role='dialog'
+        background={styles.background}
+        font={styles.font}
+      >
         <Header
           months={currentMonths}
           onNext={onNext}
@@ -133,7 +137,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
         </Flex>
         <Close onClick={handleToggle}>Close</Close>
       </Container>
-    </ReactFocusLock>
+    </FocusTrap>
   ) : (
     <> </>
   );

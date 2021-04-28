@@ -55,7 +55,7 @@
     "wtw-icons": "^1.13.0"
   },
   "dependencies": {
-    "react-focus-lock": "^2.5.0",
+    "focus-trap-react": "^8.5.0",
     "styled-components": "^5.2.3"
   },
   "engines": {
