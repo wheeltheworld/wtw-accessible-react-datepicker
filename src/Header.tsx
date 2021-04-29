@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Tuple } from "./types";
 
-import { NextIcon } from "wtw-icons/icons";
+import { NextIcon, PreviousIcon } from "wtw-icons/icons";
 
 interface HeaderProps {
   months: Tuple<string, 2>;
@@ -44,12 +44,16 @@ const Month = styled.p`
 const Header: React.FC<HeaderProps> = ({ months, onNext, onPrevious }) => {
   return (
     <Container>
-      <Button onClick={onPrevious} aria-label='Previous pair of months'>
-        {"<"}
+      <Button
+        onClick={onPrevious}
+        aria-label='Previous pair of months'
+        type='button'
+      >
+        <PreviousIcon width='15px' height='15px' />
       </Button>
       <Month aria-live='polite'>{months[0]}</Month>
       <Month aria-live='polite'>{months[1]}</Month>
-      <Button onClick={onNext} aria-label='Next pair of months'>
+      <Button onClick={onNext} aria-label='Next pair of months' type='button'>
         <NextIcon width='15px' height='15px' />
       </Button>
     </Container>

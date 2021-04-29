@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
 import Calendar from "./Calendar";
 import { months as defaultMonths, days as defaultDays } from "./utils/defaults";
@@ -6,6 +6,7 @@ import Header from "./Header";
 import { StyleConfig, Tuple } from "./types";
 import { useDateSelector } from "./utils/hooks/useDateSelector";
 import FocusTrap from "focus-trap-react";
+import { useOnClickOutside } from "./utils/hooks/useOnClickOutside";
 const Container = styled.div<{
   background: string;
   custom?: string;
@@ -18,13 +19,13 @@ const Container = styled.div<{
   flex-direction: column;
   max-width: 700px;
   position: absolute;
-  background-color: ${({ background }) => background}
-  ${({ custom }) => custom || ""}
-
+  background-color: ${({ background }) => background};
+  
   & > * {
     font-family: ${({ font }) => font};
   }
-`;
+  ${({ custom }) => custom || ""}
+  `;
 
 const Flex = styled.div`
   display: flex;
@@ -76,7 +77,6 @@ const DatePicker: React.FC<DatePickerProps> = ({
   const onPrevious = useCallback(() => {
     setDate(new Date(date.getFullYear(), date.getMonth() - 1, date.getDate()));
   }, [date]);
-
   const months = useMemo(() => props.months || defaultMonths, [props.months]);
 
   const days = useMemo(() => props.days || defaultDays, [props.days]);
@@ -93,6 +93,10 @@ const DatePicker: React.FC<DatePickerProps> = ({
     () => new Date(date.getFullYear(), date.getMonth() + 1, date.getDate()),
     [date]
   );
+  const datepicker = useRef<HTMLDivElement>(null);
+  useOnClickOutside(datepicker, () => {
+    handleToggle();
+  });
 
   const commonCalendar = {
     onSelect: addDate,
@@ -107,10 +111,11 @@ const DatePicker: React.FC<DatePickerProps> = ({
   return isOpen ? (
     <FocusTrap focusTrapOptions={{ allowOutsideClick: true }}>
       <Container
-        {...styles}
         role='dialog'
         background={styles.background}
         font={styles.font}
+        custom={styles.custom}
+        ref={datepicker}
       >
         <Header
           months={currentMonths}

@@ -11029,10 +11029,10 @@ ws@^7.4.4:
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.4.5.tgz#a484dd851e9beb6fdb420027e3885e8ce48986c1"
   integrity sha512-xzyu3hFvomRfXKH8vOFMU3OguG6oOvhXMo3xsGy3xWExqaM2dxBbVxuD99O7m3ZUFMvvscsZDqxfgMaRr/Nr1g==
 
-wtw-icons@^1.13.0:
-  version "1.13.0"
-  resolved "https://registry.yarnpkg.com/wtw-icons/-/wtw-icons-1.13.0.tgz#97e9df130de85bfbe2f561a8b837479e2616a6fb"
-  integrity sha512-9Sk8FMO3sw4xdgOaFqgE3U3jV6REIDu5GHZyRUSnjwFH9cBhia17B54l7nVTl4yssjLqGnHl4utx3TK84Iuk7w==
+wtw-icons@^1.14.0:
+  version "1.14.0"
+  resolved "https://registry.yarnpkg.com/wtw-icons/-/wtw-icons-1.14.0.tgz#c832007477f938da0af4c978aec5ca599b08d2e0"
+  integrity sha512-LjKEXckYwiFIrTg9kgcm2dINEfFKva6vd6oAEncvhJortjV79CqXzBtPoHF1+BEdbcFvzfGXQxKveL4NzjVZdQ==
   dependencies:
     react "^17.0.1"
     react-dom "^17.0.1"
