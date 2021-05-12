@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Meta, Story } from "@storybook/react";
 import Datepicker, { DatePickerProps } from "../DatePicker";
-import { useDateSelector } from "../utils/hooks/useDateSelector";
 import { useToggle } from "../utils/hooks/useToggle";
+import { SelectedDates } from "../types";
 
 export default {
   title: "Atoms/DatePicker",
@@ -11,24 +11,24 @@ export default {
 
 const Template: Story<DatePickerProps> = (args) => {
   const [open, toggle] = useToggle(true);
-  const dateSelector = useDateSelector();
+  const [date, setDate] = useState<SelectedDates>([null, null]);
   return (
     <>
       <input type='text' />
-      {dateSelector.selected[0] && (
+      {date[0] && (
         <p>
-          Selected from {dateSelector.selected[0].day}/
-          {dateSelector.selected[0].month}/{dateSelector.selected[0].year}{" "}
-          {dateSelector.selected[1] &&
-            `to ${dateSelector.selected[1].day}/${dateSelector.selected[1].month}/
-          ${dateSelector.selected[1].year}`}
+          Selected from {date[0].day}/{date[0].month}/{date[0].year}{" "}
+          {date[1] &&
+            `to ${date[1].day}/${date[1].month}/
+          ${date[1].year}`}
         </p>
       )}
       <Datepicker
         {...args}
         isOpen={open}
         handleToggle={toggle}
-        dateSelector={dateSelector}
+        onChange={setDate}
+        value={date}
       />
     </>
   );
