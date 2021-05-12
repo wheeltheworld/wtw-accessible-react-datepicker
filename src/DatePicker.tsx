@@ -23,7 +23,7 @@ const Container = styled.div<{
   padding 17px 25px;
   display: flex;
   flex-direction: column;
-  max-width: 700px;
+  width: 700px;
   position: absolute;
   background-color: ${({ background }) => background};
   

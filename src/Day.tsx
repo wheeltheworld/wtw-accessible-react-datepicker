@@ -32,8 +32,10 @@ const Circle = styled.div<{
         border: 1px solid ${styles.selected};
       }`}
 
-  ${({ selected, styles }) =>
-    selected
+  ${({ selected, styles, disabled }) =>
+    disabled
+      ? ""
+      : selected
       ? `
          background-color: ${styles.selected};
          color: white;
@@ -45,10 +47,13 @@ const DayContainer = styled.div<{
   selected?: boolean;
   right?: boolean;
   between?: boolean;
+  disabled: boolean;
   color: string;
 }>`
-  ${({ selected, right, color }) =>
-    selected
+  ${({ selected, right, color, disabled }) =>
+    disabled
+      ? ""
+      : selected
       ? `
     background: linear-gradient(${
       right ? "" : "-"
@@ -56,8 +61,10 @@ const DayContainer = styled.div<{
 `
       : ""}
 
-  ${({ between, color }) =>
-    between
+  ${({ between, color, disabled }) =>
+    disabled
+      ? ""
+      : between
       ? `
     background-color: ${color} ;
     border-radius: 0;
@@ -175,6 +182,7 @@ const Day: React.FC<DayProps> = ({
       type='button'
     >
       <DayContainer
+        disabled={disabled}
         key={day}
         selected={
           (isDaySelected && (!!selected[1] || !!hover)) ||
