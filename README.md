@@ -17,18 +17,17 @@ npm install wtw-accessible-react-datepicker
 
 ```tsx
 import React from "react";
-import { Datepicker, useDateSelector, useToggle } from "wtw-accessible-react-datepicker";
+import { Datepicker, useToggle } from "wtw-accessible-react-datepicker";
 
 const DatePickerContainer = () => {
-  const dateSelector = useDateSelector()
   const [open, toggle] = useToggle()
 
-  console.log(dateSelector.selected)
   return (
       <Datepicker
         isOpen={open}
         handleToggle={toggle}  
         dateSelector={dateSelector}
+        onChange={(newValue) => console.log(newValue)}
       />
   );
 };
