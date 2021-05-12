@@ -1,9 +1,15 @@
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import styled from "styled-components";
 import Calendar from "./Calendar";
 import { months as defaultMonths, days as defaultDays } from "./utils/defaults";
 import Header from "./Header";
-import { StyleConfig, Tuple } from "./types";
+import { SelectedDates, StyleConfig, Tuple } from "./types";
 import { useDateSelector } from "./utils/hooks/useDateSelector";
 import FocusTrap from "focus-trap-react";
 import { useOnClickOutside } from "./utils/hooks/useOnClickOutside";
@@ -45,7 +51,8 @@ const Close = styled.button`
 export interface DatePickerProps {
   isOpen: boolean;
   handleToggle: () => void;
-  dateSelector: ReturnType<typeof useDateSelector>;
+  value?: SelectedDates;
+  onChange?: (val: SelectedDates) => void;
   styles: StyleConfig;
   months?: Tuple<string, 12>;
   days?: Tuple<string, 7>;
@@ -56,19 +63,31 @@ export interface DatePickerProps {
 const DatePicker: React.FC<DatePickerProps> = ({
   isOpen,
   handleToggle,
-  dateSelector: {
+  styles,
+  minDate,
+  maxDate,
+  value,
+  onChange,
+  ...props
+}) => {
+  const {
     selected,
     addDate,
     hovered,
     setHovered,
     focusable,
     setFocusable,
-  },
-  styles,
-  minDate,
-  maxDate,
-  ...props
-}) => {
+    force,
+  } = useDateSelector(value);
+
+  useEffect(() => {
+    if (value) force(value);
+  }, [value]);
+
+  useEffect(() => {
+    if (onChange) onChange(selected);
+  }, [selected]);
+
   const [date, setDate] = useState(new Date());
   const onNext = useCallback(() => {
     setDate(new Date(date.getFullYear(), date.getMonth() + 1, date.getDate()));

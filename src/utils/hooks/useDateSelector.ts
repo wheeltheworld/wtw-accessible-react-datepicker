@@ -4,8 +4,10 @@ import { dayIsSooner } from "../funcs/dayIsSooner";
 import { generateButtonId } from "../funcs/generateButtonId";
 import { generateDay } from "../funcs/generateDay";
 
-export const useDateSelector = () => {
-  const [selected, setSelected] = useState<Tuple<Day | null, 2>>([null, null]);
+export const useDateSelector = (initial?: Tuple<Day | null, 2>) => {
+  const [selected, setSelected] = useState<Tuple<Day | null, 2>>(
+    initial || [null, null]
+  );
   const [hovered, setHovered] = useState<Day | null>(null);
   const [focusable, setFocusable] = useState<string>(
     generateButtonId(generateDay(new Date()))
@@ -41,6 +43,10 @@ export const useDateSelector = () => {
     setSelected([null, null]);
   };
 
+  const force = (val: typeof selected) => {
+    setSelected(val);
+  };
+
   return {
     selected,
     addDate,
@@ -49,5 +55,6 @@ export const useDateSelector = () => {
     focusable,
     setFocusable,
     clearDates,
+    force,
   } as const;
 };

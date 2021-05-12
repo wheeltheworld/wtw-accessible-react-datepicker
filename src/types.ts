@@ -1,3 +1,5 @@
+import { useDateSelector } from "./utils/hooks/useDateSelector";
+
 export type Tuple<TItem, TLength extends number> = [TItem, ...TItem[]] & {
   length: TLength;
 };
@@ -21,3 +23,5 @@ export interface StyleConfig {
    */
   custom?: string;
 }
+
+export type SelectedDates = ReturnType<typeof useDateSelector>["selected"];
