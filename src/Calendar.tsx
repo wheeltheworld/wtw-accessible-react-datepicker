@@ -1,7 +1,8 @@
 import React, { useMemo } from "react";
 import styled from "styled-components";
 import { generateMonthCalendar } from "./utils/funcs/generateCalendar";
-import { Day as IDay, StyleConfig, Tuple } from "./types";
+import { Tuple } from "./types/Tuple";
+import { Day as IDay } from "./types/Day";
 import { generateButtonId } from "./utils/funcs/generateButtonId";
 import Day from "./Day";
 import {
@@ -10,6 +11,7 @@ import {
   getRightDay,
   getUpDay,
 } from "./utils/funcs/getNextKeyboardDays";
+import { StyleConfig } from "./types/StyleConfig";
 
 const Keys = {
   Up: "ArrowUp",

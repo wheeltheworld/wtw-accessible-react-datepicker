@@ -1,4 +1,4 @@
-import { Day } from "../../types";
+import { Day } from "../../types/Day";
 
 /**
  * checks if the first day is sooner than the second

@@ -1,4 +1,5 @@
-import { Day, Tuple } from "../../types";
+import { Day } from "../../types/Day";
+import { Tuple } from "../../types/Tuple";
 import { dayIsSooner } from "./dayIsSooner";
 
 export const isBetween = (selected: Tuple<Day | null, 2>, target: Day) => {

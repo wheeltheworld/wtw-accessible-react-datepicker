@@ -1,4 +1,5 @@
-import { Day, Tuple } from "../../types";
+import { Day } from "../../types/Day";
+import { Tuple } from "../../types/Tuple";
 
 export const isSelected = (
   selected: Tuple<Day | null, 2>,

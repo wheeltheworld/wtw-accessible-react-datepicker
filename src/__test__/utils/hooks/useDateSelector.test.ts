@@ -1,5 +1,5 @@
 import { act, renderHook } from "@testing-library/react-hooks";
-import { Day } from "../../../types";
+import { Day } from "../../../types/Day";
 import { generateButtonId } from "../../../utils/funcs/generateButtonId";
 import { generateDay } from "../../../utils/funcs/generateDay";
 import { useDateSelector } from "../../../utils/hooks/useDateSelector";
