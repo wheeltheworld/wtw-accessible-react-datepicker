@@ -1,4 +1,4 @@
-import { Day } from "../../types";
+import { Day } from "../../types/Day";
 import { maxDate } from "../consts";
 
 type DayChangeHandler = (day: Day) => Day;

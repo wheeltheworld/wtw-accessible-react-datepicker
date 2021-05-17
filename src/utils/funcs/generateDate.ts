@@ -1,4 +1,4 @@
-import { Day } from "../../types";
+import { Day } from "../../types/Day";
 
 /**
  *  gets a datepicker Day and returns a javascript Date

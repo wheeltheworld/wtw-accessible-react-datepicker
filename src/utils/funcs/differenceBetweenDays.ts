@@ -1,4 +1,4 @@
-import { Day } from "../../types";
+import { Day } from "../../types/Day";
 import { generateDate } from "./generateDate";
 
 /**

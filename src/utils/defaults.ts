@@ -1,4 +1,4 @@
-import { Tuple } from "../types";
+import { Tuple } from "../types/Tuple";
 
 export const months: Tuple<string, 12> = [
   "January",

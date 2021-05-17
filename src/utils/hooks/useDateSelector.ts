@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Day, Tuple } from "../../types";
+import { Day } from "../../types/Day";
+import { Tuple } from "../../types/Tuple";
 import { dayIsSooner } from "../funcs/dayIsSooner";
 import { generateButtonId } from "../funcs/generateButtonId";
 import { generateDay } from "../funcs/generateDay";

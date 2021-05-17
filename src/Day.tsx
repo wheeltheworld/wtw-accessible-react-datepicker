@@ -1,9 +1,11 @@
 import React, { useMemo } from "react";
 import styled from "styled-components";
-import { Day as IDay, StyleConfig, Tuple } from "./types";
+import { Day as IDay } from "./types/Day";
 import { generateButtonId } from "./utils/funcs/generateButtonId";
 import { isBetween } from "./utils/funcs/isBetween";
 import { isSelected } from "./utils/funcs/isSelected";
+import { StyleConfig } from "./types/StyleConfig";
+import { Tuple } from "./types/Tuple";
 
 const Circle = styled.div<{
   selected?: boolean;

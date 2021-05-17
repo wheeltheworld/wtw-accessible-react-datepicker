@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Tuple } from "./types";
+import { Tuple } from "./types/Tuple";
 
 import { NextIcon, PreviousIcon } from "wtw-icons/icons";
 
