@@ -1,5 +1,5 @@
 import React, {
-  useCallback,
+  createContext,
   useEffect,
   useMemo,
   useRef,
@@ -7,7 +7,11 @@ import React, {
 } from "react";
 import styled from "styled-components";
 import Calendar from "./Calendar";
-import { months as defaultMonths, days as defaultDays } from "./utils/defaults";
+import {
+  months as defaultMonths,
+  days as defaultDays,
+  styles as defaultStyles,
+} from "./utils/defaults";
 import Header from "./Header";
 import { StyleConfig } from "./types/StyleConfig";
 import { SelectedDates } from "./types/SelectedDates";
@@ -15,6 +19,8 @@ import { Tuple } from "./types/Tuple";
 import { useDateSelector } from "./utils/hooks/useDateSelector";
 import FocusTrap from "focus-trap-react";
 import { useOnClickOutside } from "./utils/hooks/useOnClickOutside";
+import { generateDay } from "./utils/funcs/generateDay";
+import { Day } from "./types/Day";
 const Container = styled.div<{
   background: string;
   custom?: string;
@@ -55,22 +61,38 @@ export interface DatePickerProps {
   handleToggle: () => void;
   value?: SelectedDates;
   onChange?: (val: SelectedDates) => void;
-  styles: StyleConfig;
+  styles?: StyleConfig;
   months?: Tuple<string, 12>;
   days?: Tuple<string, 7>;
-  minDate?: Date;
-  maxDate?: Date;
+  minDate?: Day | "today" | null;
+  maxDate?: Day | "today" | null;
 }
+
+export const datepickerCtx = createContext<
+  Required<Pick<DatePickerProps, "days" | "months" | "styles">> & {
+    minDate: Day | null;
+    maxDate: Day | null;
+    selected: SelectedDates;
+  }
+>({
+  minDate: null,
+  maxDate: null,
+  days: defaultDays,
+  months: defaultMonths,
+  styles: defaultStyles,
+  selected: [null, null],
+});
 
 const DatePicker: React.FC<DatePickerProps> = ({
   isOpen,
   handleToggle,
-  styles,
   minDate,
   maxDate,
   value,
   onChange,
-  ...props
+  months = defaultMonths,
+  days = defaultDays,
+  styles = defaultStyles,
 }) => {
   const {
     selected,
@@ -90,80 +112,89 @@ const DatePicker: React.FC<DatePickerProps> = ({
     if (onChange) onChange(selected);
   }, [selected]);
 
-  const [date, setDate] = useState(new Date());
-  const onNext = useCallback(() => {
-    setDate(new Date(date.getFullYear(), date.getMonth() + 1, date.getDate()));
-  }, [date]);
+  const [date, setDate] = useState(
+    selected[0] ? selected[0] : generateDay(new Date())
+  );
+  const onNext = () =>
+    setDate(generateDay(new Date(date.year, date.month + 1, date.day)));
 
-  const onPrevious = useCallback(() => {
-    setDate(new Date(date.getFullYear(), date.getMonth() - 1, date.getDate()));
-  }, [date]);
-  const months = useMemo(() => props.months || defaultMonths, [props.months]);
-
-  const days = useMemo(() => props.days || defaultDays, [props.days]);
+  const onPrevious = () =>
+    setDate(generateDay(new Date(date.year, date.month - 1, date.day)));
 
   const currentMonths = useMemo((): Tuple<string, 2> => {
-    const month = date.getMonth();
+    const { month, year } = date;
     return [
-      `${months[month]} ${date.getFullYear()}`,
-      `${months[month === 11 ? 0 : month + 1]} ${date.getFullYear()}`,
+      `${months[month]} ${year}`,
+      `${months[month === 11 ? 0 : month + 1]} ${year}`,
     ];
   }, [months, date]);
 
   const secondDate = useMemo(
-    () => new Date(date.getFullYear(), date.getMonth() + 1, date.getDate()),
+    () => generateDay(new Date(date.year, date.month + 1, date.day)),
     [date]
   );
   const datepicker = useRef<HTMLDivElement>(null);
+
   useOnClickOutside(datepicker, () => {
     handleToggle();
   });
 
-  const commonCalendar = {
-    onSelect: addDate,
-    months: months,
-    selected: selected,
-    hover: hovered,
-    setHover: setHovered,
-    focusable: focusable,
-    setFocusable: setFocusable,
-  };
+  const actualMaxDate = useMemo(
+    () =>
+      maxDate
+        ? maxDate === "today"
+          ? generateDay(new Date())
+          : maxDate
+        : null,
+    [maxDate]
+  );
+  const actualMinDate = useMemo(
+    () =>
+      minDate
+        ? minDate === "today"
+          ? generateDay(new Date())
+          : minDate
+        : null,
+    [minDate]
+  );
 
   return isOpen ? (
-    <FocusTrap focusTrapOptions={{ allowOutsideClick: true }}>
-      <Container
-        role='dialog'
-        background={styles.background}
-        font={styles.font}
-        custom={styles.custom}
-        ref={datepicker}
-      >
-        <Header
-          months={currentMonths}
-          onNext={onNext}
-          onPrevious={onPrevious}
-        />
-        <Flex>
-          <Calendar
-            date={date}
-            {...commonCalendar}
-            styles={styles}
-            days={days}
-            minDate={minDate}
-            maxDate={maxDate}
+    <datepickerCtx.Provider
+      value={{
+        styles,
+        months,
+        days,
+        maxDate: actualMaxDate,
+        minDate: actualMinDate,
+        onSelect: addDate,
+        selected: selected,
+        hover: hovered,
+        setHover: setHovered,
+        focusable: focusable,
+        setFocusable: setFocusable,
+      }}
+    >
+      <FocusTrap focusTrapOptions={{ allowOutsideClick: true }}>
+        <Container
+          role='dialog'
+          background={styles.background}
+          font={styles.font}
+          custom={styles.custom}
+          ref={datepicker}
+        >
+          <Header
+            months={currentMonths}
+            onNext={onNext}
+            onPrevious={onPrevious}
           />
-          <Calendar
-            date={secondDate}
-            {...commonCalendar}
-            styles={styles}
-            days={days}
-            minDate={minDate}
-            maxDate={maxDate}
-          />
-        </Flex>
-        <Close onClick={handleToggle}>Close</Close>
-      </Container>
-    </FocusTrap>
+          <Flex>
+            <Calendar date={date} />
+            <Calendar date={secondDate} />
+          </Flex>
+          <Close onClick={handleToggle}>Close</Close>
+        </Container>
+      </FocusTrap>
+    </datepickerCtx.Provider>
   ) : (
     <> </>
   );

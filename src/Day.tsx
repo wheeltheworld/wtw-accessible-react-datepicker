@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import styled from "styled-components";
 import { Day as IDay } from "./types/Day";
 import { generateButtonId } from "./utils/funcs/generateButtonId";
@@ -6,6 +6,8 @@ import { isBetween } from "./utils/funcs/isBetween";
 import { isSelected } from "./utils/funcs/isSelected";
 import { StyleConfig } from "./types/StyleConfig";
 import { Tuple } from "./types/Tuple";
+import { datepickerCtx } from "./DatePicker";
+import { dayIsSooner } from "./utils/funcs/dayIsSooner";
 
 const Circle = styled.div<{
   selected?: boolean;
@@ -91,9 +93,7 @@ const Clickable = styled.button<{ selected: boolean; color: string }>`
 `;
 
 interface DayProps {
-  day: number;
-  month: number;
-  year: number;
+  day: IDay;
   focusable: string;
   hover: IDay | null;
   selected: Tuple<IDay | null, 2>;
@@ -101,91 +101,74 @@ interface DayProps {
   handleKey: (e: React.KeyboardEvent<HTMLButtonElement>, day: number) => void;
   setHover: (day: IDay | null) => void;
   setFocusable: (id: string) => void;
-  months: Tuple<string, 12>;
-  styles: StyleConfig;
-  minDate?: Date;
-  maxDate?: Date;
 }
 
 const Day: React.FC<DayProps> = ({
   day,
-  month,
-  year,
   selected,
   hover,
   focusable,
   onSelect,
   setHover,
   handleKey,
-  months,
   setFocusable,
-  styles,
-  minDate,
-  maxDate,
 }) => {
-  const curr = useMemo(
-    () => ({
-      day,
-      month,
-      year,
-    }),
-    []
-  );
+  const { months, styles, maxDate, minDate } = useContext(datepickerCtx);
+
   const disabled = useMemo(() => {
-    if (minDate) {
-      if (minDate > new Date(year, month, day)) return true;
-    }
-    if (maxDate) {
-      if (maxDate < new Date(year, month, day)) return true;
+    if (
+      (minDate && dayIsSooner(day, minDate)) ||
+      (maxDate && dayIsSooner(maxDate, day))
+    ) {
+      return true;
     }
 
     return false;
   }, [minDate, maxDate]);
 
   const [isDaySelected, isRightHover] = useMemo(
-    () => isSelected(selected, curr),
+    () => isSelected(selected, day),
     [selected]
   );
   const [isDayHovered, isRight] = useMemo(
-    () => isSelected([selected[0], hover], curr),
+    () => isSelected([selected[0], hover], day),
     [selected, hover]
   );
   const isDayBetween = useMemo(
     () =>
-      isBetween(selected, curr) ||
-      (!selected[1] && isBetween([selected[0], hover], curr)),
+      isBetween(selected, day) ||
+      (!selected[1] && isBetween([selected[0], hover], day)),
     [selected, hover]
   );
-  const id = useMemo(() => generateButtonId(curr), []);
+  const id = useMemo(() => generateButtonId(day), []);
 
-  if (day === -1) return <div></div>;
+  if (day.day === -1) return <div></div>;
 
   return (
     <Clickable
       onClick={() => {
-        onSelect(curr);
+        onSelect(day);
         setFocusable(id);
       }}
-      onMouseOver={() => setHover(curr)}
+      onMouseOver={() => setHover(day)}
       onMouseOut={() => setHover(null)}
       onBlur={() => setHover(null)}
-      onFocus={() => setHover(curr)}
-      aria-label={`${months[month]} ${day} ${year}`}
+      onFocus={() => setHover(day)}
+      aria-label={`${months[day.month]} ${day} ${day.year}`}
       tabIndex={focusable === id ? 0 : -1}
       onKeyDown={(e) => {
-        handleKey(e, day);
+        handleKey(e, day.day);
       }}
       disabled={disabled}
       selected={
         isDaySelected || (!!selected[0] && !selected[1] && isDayHovered)
       }
-      id={generateButtonId({ day, month, year })}
+      id={generateButtonId(day)}
       color={styles.selected}
       type='button'
     >
       <DayContainer
         disabled={disabled}
-        key={day}
         selected={
           (isDaySelected && (!!selected[1] || !!hover)) ||
           (!isDaySelected && !!selected[0] && !selected[1] && isDayHovered)
@@ -202,7 +185,7 @@ const Day: React.FC<DayProps> = ({
           className='day'
           styles={styles}
         >
-          {day}
+          {day.day}
         </Circle>
       </DayContainer>
     </Clickable>

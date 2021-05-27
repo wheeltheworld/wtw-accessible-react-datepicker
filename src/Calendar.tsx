@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import styled from "styled-components";
 import { generateMonthCalendar } from "./utils/funcs/generateCalendar";
 import { Tuple } from "./types/Tuple";
@@ -11,7 +11,7 @@ import {
   getRightDay,
   getUpDay,
 } from "./utils/funcs/getNextKeyboardDays";
-import { StyleConfig } from "./types/StyleConfig";
+import { datepickerCtx } from "./DatePicker";
 
 const Keys = {
   Up: "ArrowUp",
@@ -21,18 +21,13 @@ const Keys = {
 };
 
 interface DaysProps {
-  date: Date;
-  months: Tuple<string, 12>;
-  days: Tuple<string, 7>;
+  date: IDay;
   onSelect: (day: IDay) => void;
   selected: Tuple<IDay | null, 2>;
   hover: IDay | null;
   setHover: (day: IDay | null) => void;
   focusable: string;
   setFocusable: (str: string) => void;
-  styles: StyleConfig;
-  minDate?: Date;
-  maxDate?: Date;
 }
 
 const Grid = styled.div`
@@ -48,20 +43,15 @@ const WeekDay = styled.p<{ color: string }>`
 const Calendar: React.FC<DaysProps> = ({
   date,
   onSelect,
-  months,
   selected,
   setHover,
   hover,
   focusable,
   setFocusable,
-  days,
-  styles,
-  minDate,
-  maxDate,
 }) => {
   const calendar = useMemo(() => generateMonthCalendar(date), [date]);
-  const month = useMemo(() => calendar.month, [calendar]);
-  const year = useMemo(() => date.getFullYear(), [date]);
+  const { days, months, styles } = useContext(datepickerCtx);
+  const { month, year } = date;
 
   const handleKey = (
     e: React.KeyboardEvent<HTMLButtonElement>,
@@ -107,11 +97,7 @@ const Calendar: React.FC<DaysProps> = ({
       <Grid>
         {calendar.calendar.map((day, i) => (
           <Day
-            styles={styles}
-            months={months}
-            year={year}
-            month={month}
-            day={day}
+            day={{ day, month, year }}
             key={i + generateButtonId({ day, month, year })}
             focusable={focusable}
             handleKey={handleKey}
@@ -120,8 +106,6 @@ const Calendar: React.FC<DaysProps> = ({
             setFocusable={setFocusable}
             hover={hover}
             selected={selected}
-            minDate={minDate}
-            maxDate={maxDate}
           />
         ))}
       </Grid>
