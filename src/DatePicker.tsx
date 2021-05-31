@@ -60,6 +60,7 @@ export interface DatePickerProps {
   days?: Tuple<string, 7>;
   minDate?: Date;
   maxDate?: Date;
+  showClose?: boolean;
 }
 
 const DatePicker: React.FC<DatePickerProps> = ({
@@ -69,6 +70,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
   minDate,
   maxDate,
   value,
+  showClose = true,
   onChange,
   ...props
 }) => {
@@ -161,7 +163,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
             maxDate={maxDate}
           />
         </Flex>
-        <Close onClick={handleToggle}>Close</Close>
+        {showClose && <Close onClick={() => handleToggle()}>Close</Close>}
       </Container>
     </FocusTrap>
   ) : (
