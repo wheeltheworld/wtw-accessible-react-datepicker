@@ -21,7 +21,7 @@ import { generateButtonId } from "./utils/funcs/generateButtonId";
 
 const Container = styled.div<{
   background: string;
-  custom?: string;
+  custom?: StyleConfig["custom"];
   font: string;
   fullScreen: boolean;
 }>`
@@ -47,7 +47,8 @@ const Container = styled.div<{
   & > * {
     font-family: ${({ font }) => font};
   }
-  ${({ custom }) => custom || ""}
+  ${({ custom, fullScreen }) =>
+    custom ? (typeof custom === "string" ? custom : custom(fullScreen)) : ""}
   `;
 
 const Flex = styled.div`
