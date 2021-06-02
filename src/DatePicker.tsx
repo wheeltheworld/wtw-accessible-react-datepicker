@@ -77,6 +77,7 @@ export interface DatePickerProps {
   minDate?: Day | "today" | null;
   maxDate?: Day | "today" | null;
   multipleSelect?: boolean;
+  showClose?: boolean;
 }
 
 const DatePicker: React.FC<DatePickerProps> = ({
@@ -85,6 +86,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
   minDate,
   maxDate,
   value,
+  showClose = true,
   onChange,
   months = defaultMonths,
   days = defaultDays,
@@ -214,7 +216,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
             <Calendar date={date} />
             {isMultiple && <Calendar date={secondDate} />}
           </Flex>
-          <Close onClick={handleToggle}>Close</Close>
+          {showClose && <Close onClick={() => handleToggle()}>Close</Close>}
         </Container>
       </FocusTrap>
     </datepickerCtx.Provider>
