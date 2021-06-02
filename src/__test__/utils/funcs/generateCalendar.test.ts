@@ -2,7 +2,7 @@ import { generateMonthCalendar } from "../../../utils/funcs/generateCalendar";
 
 describe("generateMonthCalendar()", () => {
   it("should return the correct calendar with some date", () => {
-    const input = new Date(2021, 4, 23);
+    const input = { year: 2021, month: 4, day: 23 };
     const res: ReturnType<typeof generateMonthCalendar> = {
       month: 4,
       calendar: [
@@ -49,7 +49,7 @@ describe("generateMonthCalendar()", () => {
     expect(generateMonthCalendar(input)).toEqual(res);
   });
   it("should return the correct calendar with some date", () => {
-    const input = new Date(2021, 5, 14);
+    const input = { year: 2021, month: 5, day: 14 };
     const res: ReturnType<typeof generateMonthCalendar> = {
       month: 5,
       calendar: [
@@ -91,7 +91,7 @@ describe("generateMonthCalendar()", () => {
     expect(generateMonthCalendar(input)).toEqual(res);
   });
   it("should return the correct calendar with some date", () => {
-    const input = new Date(2021, 10, 23);
+    const input = { year: 2021, month: 10, day: 23 };
     const res: ReturnType<typeof generateMonthCalendar> = {
       month: 10,
       calendar: [
@@ -132,7 +132,7 @@ describe("generateMonthCalendar()", () => {
     expect(generateMonthCalendar(input)).toEqual(res);
   });
   it("should return the correct calendar with some date", () => {
-    const input = new Date(2027, 1, 2);
+    const input = { year: 2027, month: 1, day: 2 };
     const res: ReturnType<typeof generateMonthCalendar> = {
       month: 1,
       calendar: [
@@ -171,7 +171,7 @@ describe("generateMonthCalendar()", () => {
     expect(generateMonthCalendar(input)).toEqual(res);
   });
   it("should return the correct calendar with some date", () => {
-    const input = new Date(2001, 0, 23);
+    const input = { year: 2001, month: 0, day: 23 };
     const res: ReturnType<typeof generateMonthCalendar> = {
       month: 0,
       calendar: [
