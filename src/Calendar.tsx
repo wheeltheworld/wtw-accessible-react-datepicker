@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from "react";
-import styled from "styled-components";
+import styled from "@emotion/styled";
 import { generateMonthCalendar } from "./utils/funcs/generateCalendar";
 import { Day as IDay } from "./types/Day";
 import { generateButtonId } from "./utils/funcs/generateButtonId";

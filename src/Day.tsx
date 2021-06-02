@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from "react";
-import styled from "styled-components";
+import styled from "@emotion/styled";
 import { Day as IDay } from "./types/Day";
 import { generateButtonId } from "./utils/funcs/generateButtonId";
 import { isBetween } from "./utils/funcs/isBetween";
