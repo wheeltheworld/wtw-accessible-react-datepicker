@@ -5,8 +5,11 @@ import { dayIsSooner } from "../funcs/dayIsSooner";
 import { generateButtonId } from "../funcs/generateButtonId";
 import { generateDay } from "../funcs/generateDay";
 
-export const useDateSelector = (initial?: Tuple<Day | null, 2>) => {
-  const [selected, setSelected] = useState<Tuple<Day | null, 2>>(
+export const useDateSelector = (
+  initial?: Tuple<Day | null, 1 | 2>,
+  isMultiple = true
+) => {
+  const [selected, setSelected] = useState<NonNullable<typeof initial>>(
     initial || [null, null]
   );
   const [hovered, setHovered] = useState<Day | null>(null);
@@ -15,23 +18,26 @@ export const useDateSelector = (initial?: Tuple<Day | null, 2>) => {
   );
 
   const addDate = (day: Day) => {
-    if (!selected[0]) return setSelected([day, null]);
+    if (isMultiple) {
+      if (!selected[0]) return setSelected([day, null]);
 
-    if (JSON.stringify(day) === JSON.stringify(selected[0]))
-      return setSelected([null, null]);
+      if (JSON.stringify(day) === JSON.stringify(selected[0]))
+        return setSelected([null, null]);
 
-    if (JSON.stringify(day) === JSON.stringify(selected[1]))
-      return setSelected([selected[0], null]);
+      if (JSON.stringify(day) === JSON.stringify(selected[1]))
+        return setSelected([selected[0], null]);
 
-    if (selected[1] && dayIsSooner(day, selected[0])) {
-      return setSelected([day, selected[1]]);
+      if (selected[1] && dayIsSooner(day, selected[0])) {
+        return setSelected([day, selected[1]]);
+      }
+
+      if (dayIsSooner(day, selected[0])) {
+        return setSelected([day, null]);
+      }
+      setSelected([selected[0], day]);
+    } else {
+      setSelected([day]);
     }
-
-    if (dayIsSooner(day, selected[0])) {
-      return setSelected([day, null]);
-    }
-
-    setSelected([selected[0], day]);
   };
 
   /**

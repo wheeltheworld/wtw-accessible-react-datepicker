@@ -1,3 +1,4 @@
+import { StyleConfig } from "../types/StyleConfig";
 import { Tuple } from "../types/Tuple";
 
 export const months: Tuple<string, 12> = [
@@ -24,3 +25,13 @@ export const days: Tuple<string, 7> = [
   "Fr",
   "Sa",
 ];
+
+export const styles: StyleConfig = {
+  background: "",
+  between: "",
+  disabled: "",
+  font: "",
+  normal: "",
+  selected: "",
+  custom: "",
+};

@@ -23,22 +23,3 @@ jobs:
         run: yarn test
       - name: Build
         run: yarn build
-
-  publish:
-    if: ${{ github.ref == 'refs/heads/master' }}
-    needs: test-build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 14
-          registry-url: https://registry.npmjs.org/
-      - name: Install Dependencies
-        run: yarn install
-      - name: Build
-        run: yarn build
-      - name: Release
-        run: cd dist && npm publish --access-public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

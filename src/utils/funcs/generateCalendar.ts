@@ -1,5 +1,6 @@
+import { Day } from "../../types/Day";
 import { maxDate } from "../consts";
-import { generateDay } from "./generateDay";
+import { generateDate } from "./generateDate";
 
 interface Calendar {
   month: number;
@@ -10,9 +11,9 @@ interface Calendar {
  * Will return an array with the values of the calendar of a specific month
  * @param date a date with the month to get the calendar
  */
-export const generateMonthCalendar = (date: Date): Calendar => {
-  const { year, month, day } = generateDay(date);
-  const weekDay = date.getDay();
+export const generateMonthCalendar = (date: Day): Calendar => {
+  const { year, month, day } = date;
+  const weekDay = generateDate(date).getDay();
   const days: number[] = [];
 
   // Add all the days of the month

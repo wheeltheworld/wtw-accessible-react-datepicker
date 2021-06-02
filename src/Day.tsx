@@ -1,11 +1,12 @@
-import React, { useMemo } from "react";
-import styled from "styled-components";
+import React, { useContext, useMemo } from "react";
+import styled from "@emotion/styled";
 import { Day as IDay } from "./types/Day";
 import { generateButtonId } from "./utils/funcs/generateButtonId";
 import { isBetween } from "./utils/funcs/isBetween";
 import { isSelected } from "./utils/funcs/isSelected";
 import { StyleConfig } from "./types/StyleConfig";
-import { Tuple } from "./types/Tuple";
+import { dayIsSooner } from "./utils/funcs/dayIsSooner";
+import { datepickerCtx } from "./utils/ctx";
 
 const Circle = styled.div<{
   selected?: boolean;
@@ -91,118 +92,89 @@ const Clickable = styled.button<{ selected: boolean; color: string }>`
 `;
 
 interface DayProps {
-  day: number;
-  month: number;
-  year: number;
-  focusable: string;
-  hover: IDay | null;
-  selected: Tuple<IDay | null, 2>;
-  onSelect: (day: IDay) => void;
+  day: IDay;
   handleKey: (e: React.KeyboardEvent<HTMLButtonElement>, day: number) => void;
-  setHover: (day: IDay | null) => void;
-  setFocusable: (id: string) => void;
-  months: Tuple<string, 12>;
-  styles: StyleConfig;
-  minDate?: Date;
-  maxDate?: Date;
 }
 
-const Day: React.FC<DayProps> = ({
-  day,
-  month,
-  year,
-  selected,
-  hover,
-  focusable,
-  onSelect,
-  setHover,
-  handleKey,
-  months,
-  setFocusable,
-  styles,
-  minDate,
-  maxDate,
-}) => {
-  const curr = useMemo(
-    () => ({
-      day,
-      month,
-      year,
-    }),
-    []
-  );
-  const disabled = useMemo(() => {
-    if (minDate) {
-      if (minDate > new Date(year, month, day)) return true;
-    }
-    if (maxDate) {
-      if (maxDate < new Date(year, month, day)) return true;
-    }
+const Day: React.FC<DayProps> = ({ day, handleKey }) => {
+  const {
+    months,
+    styles,
+    maxDate,
+    minDate,
+    selected,
+    hover,
+    focusable,
+    onSelect,
+    setHover,
+    setFocusable,
+    isMultiple,
+  } = useContext(datepickerCtx);
 
-    return false;
-  }, [minDate, maxDate]);
+  const disabled = !!(
+    (minDate && dayIsSooner(day, minDate)) ||
+    (maxDate && dayIsSooner(maxDate, day))
+  );
 
-  const [isDaySelected, isRightHover] = useMemo(
-    () => isSelected(selected, curr),
-    [selected]
-  );
-  const [isDayHovered, isRight] = useMemo(
-    () => isSelected([selected[0], hover], curr),
-    [selected, hover]
-  );
-  const isDayBetween = useMemo(
-    () =>
-      isBetween(selected, curr) ||
-      (!selected[1] && isBetween([selected[0], hover], curr)),
-    [selected, hover]
-  );
-  const id = useMemo(() => generateButtonId(curr), []);
+  const [isDaySelected, isRight] = isSelected(selected, day);
+  const [isDayHovered, isRightHover] = isSelected([selected[0], hover], day);
 
-  if (day === -1) return <div></div>;
+  const isDayBetween =
+    isBetween(selected, day) ||
+    (!selected[1] && isBetween([selected[0], hover], day));
+
+  const id = useMemo(() => generateButtonId(day), []);
+
+  if (day.day === -1) return <span></span>;
 
   return (
     <Clickable
       onClick={() => {
-        onSelect(curr);
+        onSelect(day);
         setFocusable(id);
       }}
-      onMouseOver={() => setHover(curr)}
+      onMouseOver={() => setHover(day)}
       onMouseOut={() => setHover(null)}
       onBlur={() => setHover(null)}
-      onFocus={() => setHover(curr)}
-      aria-label={`${months[month]} ${day} ${year}`}
+      onFocus={() => setHover(day)}
+      aria-label={`${months[day.month]} ${day.day} ${day.year}`}
       tabIndex={focusable === id ? 0 : -1}
       onKeyDown={(e) => {
-        handleKey(e, day);
+        handleKey(e, day.day);
       }}
       disabled={disabled}
       selected={
-        isDaySelected || (!!selected[0] && !selected[1] && isDayHovered)
+        (isDaySelected || (!!selected[0] && !selected[1] && isDayHovered)) &&
+        isMultiple
       }
-      id={generateButtonId({ day, month, year })}
+      id={generateButtonId(day)}
       color={styles.selected}
       type='button'
     >
       <DayContainer
         disabled={disabled}
-        key={day}
         selected={
-          (isDaySelected && (!!selected[1] || !!hover)) ||
-          (!isDaySelected && !!selected[0] && !selected[1] && isDayHovered)
+          ((isDaySelected && (!!selected[1] || !!hover)) ||
+            (!isDaySelected &&
+              !!selected[0] &&
+              !selected[1] &&
+              isDayHovered)) &&
+          isMultiple
         }
         right={isRight || isRightHover}
-        between={isDayBetween}
+        between={isDayBetween && isMultiple}
         color={styles.between}
       >
         <Circle
           selected={
-            isDaySelected || (!!selected[0] && !selected[1] && isDayHovered)
+            isDaySelected ||
+            (!!selected[0] && !selected[1] && isDayHovered && isMultiple)
           }
           disabled={disabled}
           className='day'
           styles={styles}
         >
-          {day}
+          {day.day}
         </Circle>
       </DayContainer>
     </Clickable>

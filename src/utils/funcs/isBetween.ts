@@ -1,8 +1,8 @@
 import { Day } from "../../types/Day";
-import { Tuple } from "../../types/Tuple";
+import { SelectedDates } from "../../types/SelectedDates";
 import { dayIsSooner } from "./dayIsSooner";
 
-export const isBetween = (selected: Tuple<Day | null, 2>, target: Day) => {
+export const isBetween = (selected: SelectedDates, target: Day) => {
   if (!selected[0] || !selected[1]) return false;
 
   return dayIsSooner(selected[0], target) && dayIsSooner(target, selected[1]);
