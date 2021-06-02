@@ -35,7 +35,9 @@ const WeekDay = styled.p<{ color: string }>`
 
 const Calendar: React.FC<DaysProps> = ({ date }) => {
   const calendar = useMemo(() => generateMonthCalendar(date), [date]);
-  const { days, months, styles, setFocusable } = useContext(datepickerCtx);
+  const { days, months, styles, setFocusable, onNext, onPrevious } = useContext(
+    datepickerCtx
+  );
   const { month, year } = date;
 
   const handleKey = (
@@ -63,11 +65,18 @@ const Calendar: React.FC<DaysProps> = ({ date }) => {
         nextDay = { day, month, year };
     }
     const id = generateButtonId(nextDay);
-    const next = document.getElementById(id);
-    if (next) {
-      setFocusable(id);
-      next.focus();
+    if (nextDay.month > month || (nextDay.month === 1 && month === 12)) {
+      onNext(id);
+    } else if (nextDay.month < month || (nextDay.month === 12 && month === 1)) {
+      onPrevious(id);
     }
+    setTimeout(() => {
+      const next = document.getElementById(id);
+      if (next) {
+        setFocusable(id);
+        next.focus();
+      }
+    });
   };
 
   return (

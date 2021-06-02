@@ -17,6 +17,7 @@ import { generateDay } from "./utils/funcs/generateDay";
 import { Day } from "./types/Day";
 import { useWindowSize } from "./utils/hooks/useWindowSize";
 import { datepickerCtx } from "./utils/ctx";
+import { generateButtonId } from "./utils/funcs/generateButtonId";
 
 const Container = styled.div<{
   background: string;
@@ -117,11 +118,29 @@ const DatePicker: React.FC<DatePickerProps> = ({
   const [date, setDate] = useState(
     selected[0] ? selected[0] : generateDay(new Date())
   );
-  const onNext = () =>
-    setDate(generateDay(new Date(date.year, date.month + 1, date.day)));
+  const onNext = (id?: string) => {
+    const day = generateDay(new Date(date.year, date.month + 1, 1));
 
-  const onPrevious = () =>
-    setDate(generateDay(new Date(date.year, date.month - 1, date.day)));
+    if (id) {
+      setFocusable(id);
+    } else {
+      setFocusable(generateButtonId(day));
+      console.log(day);
+    }
+
+    setDate(day);
+  };
+
+  const onPrevious = (id?: string) => {
+    const day = generateDay(new Date(date.year, date.month - 1, 1));
+    if (id) {
+      setFocusable(id);
+    } else {
+      setFocusable(generateButtonId(day));
+    }
+
+    setDate(day);
+  };
 
   const currentMonths = useMemo((): Tuple<string, 2 | 1> => {
     const { month, year } = date;
@@ -171,12 +190,14 @@ const DatePicker: React.FC<DatePickerProps> = ({
         maxDate: actualMaxDate,
         minDate: actualMinDate,
         onSelect: addDate,
-        selected: selected,
+        selected,
         hover: hovered,
         setHover: setHovered,
-        focusable: focusable,
-        setFocusable: setFocusable,
+        focusable,
+        setFocusable,
         isMultiple: multipleSelect,
+        onPrevious,
+        onNext,
       }}
     >
       <FocusTrap focusTrapOptions={{ allowOutsideClick: true }}>
@@ -188,11 +209,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
           ref={datepicker}
           fullScreen={isMobile}
         >
-          <Header
-            months={currentMonths}
-            onNext={onNext}
-            onPrevious={onPrevious}
-          />
+          <Header months={currentMonths} />
           <Flex>
             <Calendar date={date} />
             {isMultiple && <Calendar date={secondDate} />}

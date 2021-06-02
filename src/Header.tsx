@@ -1,13 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "@emotion/styled";
 import { Tuple } from "./types/Tuple";
 
 import { NextIcon, PreviousIcon } from "wtw-icons/icons";
+import { datepickerCtx } from "./utils/ctx";
 
 interface HeaderProps {
   months: Tuple<string, 1 | 2>;
-  onNext: () => void;
-  onPrevious: () => void;
 }
 
 const Container = styled.div`
@@ -50,12 +49,13 @@ const Month = styled.p`
   place-items: center;
 `;
 
-const Header: React.FC<HeaderProps> = ({ months, onNext, onPrevious }) => {
+const Header: React.FC<HeaderProps> = ({ months }) => {
+  const { onNext, onPrevious } = useContext(datepickerCtx);
   const isPair = months.length == 2;
   return (
     <Container>
       <Button
-        onClick={onPrevious}
+        onClick={() => onPrevious()}
         aria-label={`Previous ${isPair ? "pair of months" : "month"}`}
         type='button'
       >
@@ -64,7 +64,7 @@ const Header: React.FC<HeaderProps> = ({ months, onNext, onPrevious }) => {
       <Month aria-live='polite'>{months[0]}</Month>
       {isPair && <Month aria-live='polite'>{months[1]}</Month>}
       <Button
-        onClick={onNext}
+        onClick={() => onNext()}
         aria-label={`Next ${isPair ? "pair of months" : "month"}`}
         type='button'
       >

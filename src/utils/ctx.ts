@@ -15,6 +15,8 @@ type Context = Required<Pick<DatePickerProps, "days" | "months" | "styles">> & {
   focusable: string;
   setFocusable: ReturnType<typeof useDateSelector>["setFocusable"];
   isMultiple: boolean;
+  onNext: (id?: string) => void;
+  onPrevious: (id?: string) => void;
 };
 
 export const datepickerCtx = createContext<Context>({
@@ -30,4 +32,6 @@ export const datepickerCtx = createContext<Context>({
   setFocusable: () => {},
   setHover: () => {},
   isMultiple: true,
+  onNext: () => {},
+  onPrevious: () => {},
 });

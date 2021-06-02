@@ -137,14 +137,15 @@ const Day: React.FC<DayProps> = ({ day, handleKey }) => {
       onMouseOut={() => setHover(null)}
       onBlur={() => setHover(null)}
       onFocus={() => setHover(day)}
-      aria-label={`${months[day.month]} ${day} ${day.year}`}
+      aria-label={`${months[day.month]} ${day.day} ${day.year}`}
       tabIndex={focusable === id ? 0 : -1}
       onKeyDown={(e) => {
         handleKey(e, day.day);
       }}
       disabled={disabled}
       selected={
-        isDaySelected || (!!selected[0] && !selected[1] && isDayHovered)
+        (isDaySelected || (!!selected[0] && !selected[1] && isDayHovered)) &&
+        isMultiple
       }
       id={generateButtonId(day)}
       color={styles.selected}
