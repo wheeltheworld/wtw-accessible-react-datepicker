@@ -9,5 +9,5 @@ export interface StyleConfig {
   /**
    * this will add to the datepicker any css you want
    */
-  custom?: string;
+  custom?: string | ((isMobile: boolean) => string);
 }
