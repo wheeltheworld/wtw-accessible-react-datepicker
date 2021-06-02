@@ -7,7 +7,7 @@ import { generateDay } from "../funcs/generateDay";
 
 export const useDateSelector = (
   initial?: Tuple<Day | null, 1 | 2>,
-  isMultple = true
+  isMultiple = true
 ) => {
   const [selected, setSelected] = useState<NonNullable<typeof initial>>(
     initial || [null, null]
@@ -18,7 +18,7 @@ export const useDateSelector = (
   );
 
   const addDate = (day: Day) => {
-    if (isMultple) {
+    if (isMultiple) {
       if (!selected[0]) return setSelected([day, null]);
 
       if (JSON.stringify(day) === JSON.stringify(selected[0]))
