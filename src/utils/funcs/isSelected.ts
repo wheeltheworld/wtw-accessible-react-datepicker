@@ -1,8 +1,8 @@
 import { Day } from "../../types/Day";
-import { Tuple } from "../../types/Tuple";
+import { SelectedDates } from "../../types/SelectedDates";
 
 export const isSelected = (
-  selected: Tuple<Day | null, 2>,
+  selected: SelectedDates,
   { day, month, year }: Day
 ) => {
   if (

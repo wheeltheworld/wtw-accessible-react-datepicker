@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
 import Calendar from "./Calendar";
 import {
@@ -21,19 +15,33 @@ import FocusTrap from "focus-trap-react";
 import { useOnClickOutside } from "./utils/hooks/useOnClickOutside";
 import { generateDay } from "./utils/funcs/generateDay";
 import { Day } from "./types/Day";
+import { useWindowSize } from "./utils/hooks/useWindowSize";
+import { datepickerCtx } from "./utils/ctx";
+
 const Container = styled.div<{
   background: string;
   custom?: string;
   font: string;
+  fullScreen: boolean;
 }>`
+  box-sizing: border-box;
   border-radius: 10px;
   border: 1px solid black;
   padding 17px 25px;
   display: flex;
   flex-direction: column;
-  width: 700px;
   position: absolute;
   background-color: ${({ background }) => background};
+
+  ${({ fullScreen }) =>
+    fullScreen &&
+    `
+  position: fixed;
+  width: 100vw;
+  bottom: 0;
+  left: 0;
+  
+  `}
   
   & > * {
     font-family: ${({ font }) => font};
@@ -43,7 +51,8 @@ const Container = styled.div<{
 
 const Flex = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  column-gap: 40px;
 `;
 
 const Close = styled.button`
@@ -66,22 +75,8 @@ export interface DatePickerProps {
   days?: Tuple<string, 7>;
   minDate?: Day | "today" | null;
   maxDate?: Day | "today" | null;
+  multipleSelect?: boolean;
 }
-
-export const datepickerCtx = createContext<
-  Required<Pick<DatePickerProps, "days" | "months" | "styles">> & {
-    minDate: Day | null;
-    maxDate: Day | null;
-    selected: SelectedDates;
-  }
->({
-  minDate: null,
-  maxDate: null,
-  days: defaultDays,
-  months: defaultMonths,
-  styles: defaultStyles,
-  selected: [null, null],
-});
 
 const DatePicker: React.FC<DatePickerProps> = ({
   isOpen,
@@ -93,7 +88,14 @@ const DatePicker: React.FC<DatePickerProps> = ({
   months = defaultMonths,
   days = defaultDays,
   styles = defaultStyles,
+  multipleSelect = true,
 }) => {
+  const window = useWindowSize();
+
+  const isMobile = (window.width || 757) < 756;
+
+  const isMultiple = !isMobile && multipleSelect;
+
   const {
     selected,
     addDate,
@@ -102,7 +104,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
     focusable,
     setFocusable,
     force,
-  } = useDateSelector(value);
+  } = useDateSelector(value, multipleSelect);
 
   useEffect(() => {
     if (value) force(value);
@@ -121,13 +123,15 @@ const DatePicker: React.FC<DatePickerProps> = ({
   const onPrevious = () =>
     setDate(generateDay(new Date(date.year, date.month - 1, date.day)));
 
-  const currentMonths = useMemo((): Tuple<string, 2> => {
+  const currentMonths = useMemo((): Tuple<string, 2 | 1> => {
     const { month, year } = date;
-    return [
-      `${months[month]} ${year}`,
-      `${months[month === 11 ? 0 : month + 1]} ${year}`,
-    ];
-  }, [months, date]);
+    const monthOne = `${months[month]} ${year}`;
+    const monthTwo = `${months[month === 11 ? 0 : month + 1]} ${year}`;
+    if (isMultiple) {
+      return [monthOne, monthTwo];
+    }
+    return [monthOne];
+  }, [months, date, isMultiple]);
 
   const secondDate = useMemo(
     () => generateDay(new Date(date.year, date.month + 1, date.day)),
@@ -172,6 +176,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
         setHover: setHovered,
         focusable: focusable,
         setFocusable: setFocusable,
+        isMultiple: multipleSelect,
       }}
     >
       <FocusTrap focusTrapOptions={{ allowOutsideClick: true }}>
@@ -181,6 +186,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
           font={styles.font}
           custom={styles.custom}
           ref={datepicker}
+          fullScreen={isMobile}
         >
           <Header
             months={currentMonths}
@@ -189,15 +195,13 @@ const DatePicker: React.FC<DatePickerProps> = ({
           />
           <Flex>
             <Calendar date={date} />
-            <Calendar date={secondDate} />
+            {isMultiple && <Calendar date={secondDate} />}
           </Flex>
           <Close onClick={handleToggle}>Close</Close>
         </Container>
       </FocusTrap>
     </datepickerCtx.Provider>
-  ) : (
-    <> </>
-  );
+  ) : null;
 };
 
 export default DatePicker;

@@ -1,7 +1,6 @@
 import React, { useContext, useMemo } from "react";
 import styled from "styled-components";
 import { generateMonthCalendar } from "./utils/funcs/generateCalendar";
-import { Tuple } from "./types/Tuple";
 import { Day as IDay } from "./types/Day";
 import { generateButtonId } from "./utils/funcs/generateButtonId";
 import Day from "./Day";
@@ -11,7 +10,7 @@ import {
   getRightDay,
   getUpDay,
 } from "./utils/funcs/getNextKeyboardDays";
-import { datepickerCtx } from "./DatePicker";
+import { datepickerCtx } from "./utils/ctx";
 
 const Keys = {
   Up: "ArrowUp",
@@ -22,12 +21,6 @@ const Keys = {
 
 interface DaysProps {
   date: IDay;
-  onSelect: (day: IDay) => void;
-  selected: Tuple<IDay | null, 2>;
-  hover: IDay | null;
-  setHover: (day: IDay | null) => void;
-  focusable: string;
-  setFocusable: (str: string) => void;
 }
 
 const Grid = styled.div`
@@ -40,17 +33,9 @@ const WeekDay = styled.p<{ color: string }>`
   color: ${({ color }) => color};
 `;
 
-const Calendar: React.FC<DaysProps> = ({
-  date,
-  onSelect,
-  selected,
-  setHover,
-  hover,
-  focusable,
-  setFocusable,
-}) => {
+const Calendar: React.FC<DaysProps> = ({ date }) => {
   const calendar = useMemo(() => generateMonthCalendar(date), [date]);
-  const { days, months, styles } = useContext(datepickerCtx);
+  const { days, months, styles, setFocusable } = useContext(datepickerCtx);
   const { month, year } = date;
 
   const handleKey = (
@@ -99,13 +84,7 @@ const Calendar: React.FC<DaysProps> = ({
           <Day
             day={{ day, month, year }}
             key={i + generateButtonId({ day, month, year })}
-            focusable={focusable}
             handleKey={handleKey}
-            onSelect={onSelect}
-            setHover={setHover}
-            setFocusable={setFocusable}
-            hover={hover}
-            selected={selected}
           />
         ))}
       </Grid>
