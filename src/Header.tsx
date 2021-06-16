@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import styled from "@emotion/styled";
 import { Tuple } from "./types/Tuple";
 
-import { NextIcon, PreviousIcon } from "wtw-icons/icons";
+import { ArrowBackIcon, ArrowForwardIcon } from "wtw-icons/icons";
 import { datepickerCtx } from "./utils/ctx";
 
 interface HeaderProps {
@@ -59,7 +59,7 @@ const Header: React.FC<HeaderProps> = ({ months }) => {
         aria-label={`Previous ${isPair ? "pair of months" : "month"}`}
         type='button'
       >
-        <PreviousIcon width='15px' height='15px' />
+        <ArrowBackIcon width='15px' height='15px' />
       </Button>
       <Month aria-live='polite'>{months[0]}</Month>
       {isPair && <Month aria-live='polite'>{months[1]}</Month>}
@@ -68,7 +68,7 @@ const Header: React.FC<HeaderProps> = ({ months }) => {
         aria-label={`Next ${isPair ? "pair of months" : "month"}`}
         type='button'
       >
-        <NextIcon width='15px' height='15px' />
+        <ArrowForwardIcon width='15px' height='15px' />
       </Button>
     </Container>
   );
