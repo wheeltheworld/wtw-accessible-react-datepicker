@@ -39,7 +39,8 @@ const Container = styled.div<{
     `
   position: fixed;
   width: 100vw;
-  bottom: 0;
+  transform: translateY(-50%);
+  top: 50%;
   left: 0;
   
   `}
