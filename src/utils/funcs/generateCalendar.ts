@@ -28,6 +28,10 @@ export const generateMonthCalendar = (date: Day): Calendar => {
     days.unshift(-1);
   }
 
+  while (days.length < 42) {
+    days.push(-1);
+  }
+
   return {
     month,
     calendar: days,
