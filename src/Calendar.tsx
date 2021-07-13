@@ -23,9 +23,10 @@ interface DaysProps {
   date: IDay;
 }
 
-const Grid = styled.div`
+const Grid = styled.div<{ days?: boolean }>`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+  ${({ days }) => (days ? `grid-template-rows: repeat(6, 1fr);` : "")}
   place-items: center;
 `;
 
@@ -38,6 +39,7 @@ const Calendar: React.FC<DaysProps> = ({ date }) => {
   const { days, months, styles, setFocusable, onNext, onPrevious } = useContext(
     datepickerCtx
   );
+
   const { month, year } = date;
 
   const handleKey = (
@@ -88,7 +90,7 @@ const Calendar: React.FC<DaysProps> = ({ date }) => {
           </WeekDay>
         ))}
       </Grid>
-      <Grid>
+      <Grid days>
         {calendar.calendar.map((day, i) => (
           <Day
             day={{ day, month, year }}
