@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
-import styled from "@emotion/styled";
-import { Tuple } from "./types/Tuple";
+import React, { useContext } from 'react';
+import styled from '@emotion/styled';
+import { Tuple } from './types/Tuple';
 
-import { ArrowBackIcon, ArrowForwardIcon } from "wtw-icons/icons";
-import { datepickerCtx } from "./utils/ctx";
+import { ArrowBackIcon, ArrowForwardIcon } from 'wtw-icons/icons';
+import { datepickerCtx } from './utils/ctx';
 
 interface HeaderProps {
   months: Tuple<string, 1 | 2>;
@@ -56,19 +56,19 @@ const Header: React.FC<HeaderProps> = ({ months }) => {
     <Container>
       <Button
         onClick={() => onPrevious()}
-        aria-label={`Previous ${isPair ? "pair of months" : "month"}`}
-        type='button'
+        aria-label={`Previous ${isPair ? 'pair of months' : 'month'}`}
+        type="button"
       >
-        <ArrowBackIcon width='15px' height='15px' />
+        <ArrowBackIcon width="15px" height="15px" />
       </Button>
-      <Month aria-live='polite'>{months[0]}</Month>
-      {isPair && <Month aria-live='polite'>{months[1]}</Month>}
+      <Month aria-live="polite">{months[0]}</Month>
+      {isPair && <Month aria-live="polite">{months[1]}</Month>}
       <Button
         onClick={() => onNext()}
-        aria-label={`Next ${isPair ? "pair of months" : "month"}`}
-        type='button'
+        aria-label={`Next ${isPair ? 'pair of months' : 'month'}`}
+        type="button"
       >
-        <ArrowForwardIcon width='15px' height='15px' />
+        <ArrowForwardIcon width="15px" height="15px" />
       </Button>
     </Container>
   );
