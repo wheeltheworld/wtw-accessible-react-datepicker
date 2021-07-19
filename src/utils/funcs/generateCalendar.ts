@@ -1,6 +1,6 @@
-import { Day } from "../../types/Day";
-import { maxDate } from "../consts";
-import { generateDate } from "./generateDate";
+import { Day } from '../../types/Day';
+import { maxDate } from '../consts';
+import { generateDate } from './generateDate';
 
 interface Calendar {
   month: number;
@@ -17,7 +17,7 @@ export const generateMonthCalendar = (date: Day): Calendar => {
   const days: number[] = [];
 
   // Add all the days of the month
-  for (let i = 1; i <= maxDate(year)[month]; i++) {
+  for (let i = 1; i <= maxDate(year)[month - 1]; i++) {
     days.push(i);
   }
 
