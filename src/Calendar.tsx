@@ -1,22 +1,17 @@
-import React, { useContext, useMemo } from "react";
-import styled from "@emotion/styled";
-import { generateMonthCalendar } from "./utils/funcs/generateCalendar";
-import { Day as IDay } from "./types/Day";
-import { generateButtonId } from "./utils/funcs/generateButtonId";
-import Day from "./Day";
-import {
-  getDownDay,
-  getLeftDay,
-  getRightDay,
-  getUpDay,
-} from "./utils/funcs/getNextKeyboardDays";
-import { datepickerCtx } from "./utils/ctx";
+import React, { useContext, useMemo } from 'react';
+import styled from '@emotion/styled';
+import { generateMonthCalendar } from './utils/funcs/generateCalendar';
+import { Day as IDay } from './types/Day';
+import { generateButtonId } from './utils/funcs/generateButtonId';
+import Day from './Day';
+import { getDownDay, getLeftDay, getRightDay, getUpDay } from './utils/funcs/getNextKeyboardDays';
+import { datepickerCtx } from './utils/ctx';
 
 const Keys = {
-  Up: "ArrowUp",
-  Down: "ArrowDown",
-  Left: "ArrowLeft",
-  Right: "ArrowRight",
+  Up: 'ArrowUp',
+  Down: 'ArrowDown',
+  Left: 'ArrowLeft',
+  Right: 'ArrowRight',
 };
 
 interface DaysProps {
@@ -26,7 +21,7 @@ interface DaysProps {
 const Grid = styled.div<{ days?: boolean }>`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  ${({ days }) => (days ? `grid-template-rows: repeat(6, 1fr);` : "")}
+  ${({ days }) => (days ? `grid-template-rows: repeat(6, 1fr);` : '')}
   place-items: center;
 `;
 
@@ -36,16 +31,11 @@ const WeekDay = styled.p<{ color: string }>`
 
 const Calendar: React.FC<DaysProps> = ({ date }) => {
   const calendar = useMemo(() => generateMonthCalendar(date), [date]);
-  const { days, months, styles, setFocusable, onNext, onPrevious } = useContext(
-    datepickerCtx
-  );
+  const { days, months, styles, setFocusable, onNext, onPrevious } = useContext(datepickerCtx);
 
   const { month, year } = date;
 
-  const handleKey = (
-    e: React.KeyboardEvent<HTMLButtonElement>,
-    day: number
-  ) => {
+  const handleKey = (e: React.KeyboardEvent<HTMLButtonElement>, day: number) => {
     if (!Object.values(Keys).includes(e.code)) return;
     e.preventDefault();
 
@@ -82,7 +72,7 @@ const Calendar: React.FC<DaysProps> = ({ date }) => {
   };
 
   return (
-    <div role='grid' aria-label={`${months[month]}'s calendar`}>
+    <div role="grid" aria-label={`${months[month - 1]}'s calendar`}>
       <Grid>
         {days.map((day) => (
           <WeekDay key={day} color={styles.disabled}>

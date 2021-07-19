@@ -1,12 +1,12 @@
-import React, { useContext, useMemo } from "react";
-import styled from "@emotion/styled";
-import { Day as IDay } from "./types/Day";
-import { generateButtonId } from "./utils/funcs/generateButtonId";
-import { isBetween } from "./utils/funcs/isBetween";
-import { isSelected } from "./utils/funcs/isSelected";
-import { StyleConfig } from "./types/StyleConfig";
-import { dayIsSooner } from "./utils/funcs/dayIsSooner";
-import { datepickerCtx } from "./utils/ctx";
+import React, { useContext, useMemo } from 'react';
+import styled from '@emotion/styled';
+import { Day as IDay } from './types/Day';
+import { generateButtonId } from './utils/funcs/generateButtonId';
+import { isBetween } from './utils/funcs/isBetween';
+import { isSelected } from './utils/funcs/isSelected';
+import { StyleConfig } from './types/StyleConfig';
+import { dayIsSooner } from './utils/funcs/dayIsSooner';
+import { datepickerCtx } from './utils/ctx';
 
 const Circle = styled.div<{
   selected?: boolean;
@@ -37,13 +37,13 @@ const Circle = styled.div<{
 
   ${({ selected, styles, disabled }) =>
     disabled
-      ? ""
+      ? ''
       : selected
       ? `
          background-color: ${styles.selected};
          color: white;
       `
-      : ""};
+      : ''};
 `;
 
 const DayContainer = styled.div<{
@@ -55,24 +55,24 @@ const DayContainer = styled.div<{
 }>`
   ${({ selected, right, color, disabled }) =>
     disabled
-      ? ""
+      ? ''
       : selected
       ? `
     background: linear-gradient(${
-      right ? "" : "-"
+      right ? '' : '-'
     }90deg, ${color} 0%, ${color} 50%, white 50%, white 100%);
 `
-      : ""}
+      : ''}
 
   ${({ between, color, disabled }) =>
     disabled
-      ? ""
+      ? ''
       : between
       ? `
     background-color: ${color} ;
     border-radius: 0;
   `
-      : ""}
+      : ''}
 `;
 
 const Clickable = styled.button<{ selected: boolean; color: string }>`
@@ -120,8 +120,7 @@ const Day: React.FC<DayProps> = ({ day, handleKey }) => {
   const [isDayHovered, isRightHover] = isSelected([selected[0], hover], day);
 
   const isDayBetween =
-    isBetween(selected, day) ||
-    (!selected[1] && isBetween([selected[0], hover], day));
+    isBetween(selected, day) || (!selected[1] && isBetween([selected[0], hover], day));
 
   const id = useMemo(() => generateButtonId(day), []);
 
@@ -137,28 +136,22 @@ const Day: React.FC<DayProps> = ({ day, handleKey }) => {
       onMouseOut={() => setHover(null)}
       onBlur={() => setHover(null)}
       onFocus={() => setHover(day)}
-      aria-label={`${months[day.month]} ${day.day} ${day.year}`}
+      aria-label={`${months[day.month - 1]} ${day.day} ${day.year}`}
       tabIndex={focusable === id ? 0 : -1}
       onKeyDown={(e) => {
         handleKey(e, day.day);
       }}
       disabled={disabled}
-      selected={
-        (isDaySelected || (!!selected[0] && !selected[1] && isDayHovered)) &&
-        isMultiple
-      }
+      selected={(isDaySelected || (!!selected[0] && !selected[1] && isDayHovered)) && isMultiple}
       id={generateButtonId(day)}
       color={styles.selected}
-      type='button'
+      type="button"
     >
       <DayContainer
         disabled={disabled}
         selected={
           ((isDaySelected && (!!selected[1] || !!hover)) ||
-            (!isDaySelected &&
-              !!selected[0] &&
-              !selected[1] &&
-              isDayHovered)) &&
+            (!isDaySelected && !!selected[0] && !selected[1] && isDayHovered)) &&
           isMultiple
         }
         right={isRight || isRightHover}
@@ -166,12 +159,9 @@ const Day: React.FC<DayProps> = ({ day, handleKey }) => {
         color={styles.between}
       >
         <Circle
-          selected={
-            isDaySelected ||
-            (!!selected[0] && !selected[1] && isDayHovered && isMultiple)
-          }
+          selected={isDaySelected || (!!selected[0] && !selected[1] && isDayHovered && isMultiple)}
           disabled={disabled}
-          className='day'
+          className="day"
           styles={styles}
         >
           {day.day}
