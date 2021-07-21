@@ -35,13 +35,16 @@ const Container = styled.div<{
   background-color: ${({ background }) => background};
 
   ${({ fullScreen }) =>
-    fullScreen &&
+  fullScreen &&
     `
-  position: fixed;
-  width: 100vw;
-  transform: translateY(-50%);
-  top: 50%;
-  left: 0;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 1px solid black;
+  padding: 17px 25px;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  width: 90%;
   
   `}
 
