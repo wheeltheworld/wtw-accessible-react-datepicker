@@ -44,7 +44,7 @@ const Container = styled.div<{
   display: flex;
   flex-direction: column;
   position: absolute;
-  width: 90%;
+  width: 100%;
   
   `}
 
