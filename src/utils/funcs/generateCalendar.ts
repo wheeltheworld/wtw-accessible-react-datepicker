@@ -1,6 +1,6 @@
-import { Day } from '../../types/Day';
-import { maxDate } from '../consts';
-import { generateDate } from './generateDate';
+import { Day } from "../../types/Day";
+import { maxDate } from "../consts";
+import { generateDate } from "./generateDate";
 
 interface Calendar {
   month: number;

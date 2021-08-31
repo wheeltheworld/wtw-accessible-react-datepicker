@@ -1,27 +1,27 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import styled from '@emotion/styled';
-import Calendar from './Calendar';
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import styled from "@emotion/styled";
+import Calendar from "./Calendar";
 import {
   months as defaultMonths,
   days as defaultDays,
   styles as defaultStyles,
-} from './utils/defaults';
-import Header from './Header';
-import { StyleConfig } from './types/StyleConfig';
-import { SelectedDates } from './types/SelectedDates';
-import { Tuple } from './types/Tuple';
-import { useDateSelector } from './utils/hooks/useDateSelector';
-import FocusTrap from 'focus-trap-react';
-import { useOnClickOutside } from './utils/hooks/useOnClickOutside';
-import { generateDay } from './utils/funcs/generateDay';
-import { Day } from './types/Day';
-import { useWindowSize } from './utils/hooks/useWindowSize';
-import { datepickerCtx } from './utils/ctx';
-import { generateButtonId } from './utils/funcs/generateButtonId';
+} from "./utils/defaults";
+import Header from "./Header";
+import { StyleConfig } from "./types/StyleConfig";
+import { SelectedDates } from "./types/SelectedDates";
+import { Tuple } from "./types/Tuple";
+import { useDateSelector } from "./utils/hooks/useDateSelector";
+import FocusTrap from "focus-trap-react";
+import { useOnClickOutside } from "./utils/hooks/useOnClickOutside";
+import { generateDay } from "./utils/funcs/generateDay";
+import { Day } from "./types/Day";
+import { useWindowSize } from "./utils/hooks/useWindowSize";
+import { datepickerCtx } from "./utils/ctx";
+import { generateButtonId } from "./utils/funcs/generateButtonId";
 
 const Container = styled.div<{
   background: string;
-  custom?: StyleConfig['custom'];
+  custom?: StyleConfig["custom"];
   font: string;
   fullScreen: boolean;
 }>`
@@ -35,7 +35,7 @@ const Container = styled.div<{
   background-color: ${({ background }) => background};
 
   ${({ fullScreen }) =>
-  fullScreen &&
+    fullScreen &&
     `
   box-sizing: border-box;
   border-radius: 10px;
@@ -52,7 +52,7 @@ const Container = styled.div<{
     font-family: ${({ font }) => font};
   }
   ${({ custom, fullScreen }) =>
-    custom ? (typeof custom === 'string' ? custom : custom(fullScreen)) : ''}
+    custom ? (typeof custom === "string" ? custom : custom(fullScreen)) : ""}
 `;
 
 const Flex = styled.div`
@@ -79,8 +79,8 @@ export interface DatePickerProps {
   styles?: StyleConfig;
   months?: Tuple<string, 12>;
   days?: Tuple<string, 7>;
-  minDate?: Day | 'today' | null;
-  maxDate?: Day | 'today' | null;
+  minDate?: Day | "today" | null;
+  maxDate?: Day | "today" | null;
   multipleSelect?: boolean;
   showClose?: boolean;
 }
@@ -122,7 +122,9 @@ const DatePicker: React.FC<DatePickerProps> = ({
     if (onChange) onChange(selected);
   }, [selected]);
 
-  const [date, setDate] = useState(selected[0] ? selected[0] : generateDay(new Date()));
+  const [date, setDate] = useState(
+    selected[0] ? selected[0] : generateDay(new Date())
+  );
   const onNext = (id?: string) => {
     const day = generateDay(new Date(date.year, date.month, 1));
 
@@ -149,14 +151,19 @@ const DatePicker: React.FC<DatePickerProps> = ({
   const currentMonths = useMemo((): Tuple<string, 2 | 1> => {
     const { month, year } = date;
     const monthOne = `${months[month - 1]} ${year}`;
-    const monthTwo = `${months[month === 12 ? 0 : month]} ${month === 12 ? year + 1 : year}`;
+    const monthTwo = `${months[month === 12 ? 0 : month]} ${
+      month === 12 ? year + 1 : year
+    }`;
     if (isMultiple) {
       return [monthOne, monthTwo];
     }
     return [monthOne];
   }, [months, date, isMultiple]);
 
-  const secondDate = useMemo(() => generateDay(new Date(date.year, date.month, date.day)), [date]);
+  const secondDate = useMemo(
+    () => generateDay(new Date(date.year, date.month + 1, 1)),
+    [date]
+  );
   const datepicker = useRef<HTMLDivElement>(null);
 
   useOnClickOutside(datepicker, () => {
@@ -164,12 +171,22 @@ const DatePicker: React.FC<DatePickerProps> = ({
   });
 
   const actualMaxDate = useMemo(
-    () => (maxDate ? (maxDate === 'today' ? generateDay(new Date()) : maxDate) : null),
-    [maxDate],
+    () =>
+      maxDate
+        ? maxDate === "today"
+          ? generateDay(new Date())
+          : maxDate
+        : null,
+    [maxDate]
   );
   const actualMinDate = useMemo(
-    () => (minDate ? (minDate === 'today' ? generateDay(new Date()) : minDate) : null),
-    [minDate],
+    () =>
+      minDate
+        ? minDate === "today"
+          ? generateDay(new Date())
+          : minDate
+        : null,
+    [minDate]
   );
 
   return isOpen ? (
@@ -193,7 +210,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
     >
       <FocusTrap focusTrapOptions={{ allowOutsideClick: true }}>
         <Container
-          role="dialog"
+          role='dialog'
           background={styles.background}
           font={styles.font}
           custom={styles.custom}

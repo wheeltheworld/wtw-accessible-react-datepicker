@@ -47,6 +47,5 @@ Default.args = {
     background: "white",
     font: "sans-serif",
   },
-  multipleSelect: false,
   minDate: generateDay(new Date()),
 };
