@@ -161,7 +161,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
   }, [months, date, isMultiple]);
 
   const secondDate = useMemo(
-    () => generateDay(new Date(date.year, date.month + 1, 0)),
+    () => generateDay(new Date(date.year, date.month + 1, 1)),
     [date]
   );
   const datepicker = useRef<HTMLDivElement>(null);
