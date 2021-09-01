@@ -1,3 +1,3 @@
-import { useDateSelector } from "../utils/hooks/useDateSelector";
+import { useDateSelector } from '../utils/hooks/useDateSelector';
 
-export type SelectedDates = ReturnType<typeof useDateSelector>["selected"];
+export type SelectedDates = ReturnType<typeof useDateSelector>['selected'];

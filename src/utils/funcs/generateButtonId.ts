@@ -1,4 +1,3 @@
-import { Day } from "../../types/Day";
+import { Day } from '../../types/Day';
 
-export const generateButtonId = (day: Day) =>
-  `${day.day}-${day.month}-${day.year}`;
+export const generateButtonId = (day: Day) => `${day.day}-${day.month}-${day.year}`;
