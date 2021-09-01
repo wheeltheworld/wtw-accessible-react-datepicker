@@ -1,6 +1,6 @@
 {
   "name": "wtw-accessible-react-datepicker",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "An accessible datepicker with all the keyboard bindings, compatible with React",
   "keywords": [
     "datepicker",
@@ -42,6 +42,7 @@
     "@types/react": "^17.0.3",
     "babel-loader": "^8.2.2",
     "jest": "^26.6.3",
+    "prettier": "^2.3.2",
     "react": "^17.0.2",
     "rimraf": "^3.0.2",
     "rollup": "^2.33.3",
