@@ -103,6 +103,7 @@ export interface DatePickerProps {
     showClose?: boolean;
     showSave?: boolean;
     showCleanDates?: boolean;
+    buttonsLabels?: { closeLabel?: string; saveLabel?: string; clearLabel?: string }
 }
 
 const DatePicker: React.FC<DatePickerProps> = ({
@@ -118,7 +119,8 @@ const DatePicker: React.FC<DatePickerProps> = ({
     styles = defaultStyles,
     multipleSelect = true,
     showSave = true,
-    showCleanDates = true
+    showCleanDates = true,
+    buttonsLabels = {closeLabel: 'Close', saveLabel: 'Save', clearLabel: 'Clear dates'}
 }) => {
     const window = useWindowSize();
 
@@ -221,9 +223,9 @@ const DatePicker: React.FC<DatePickerProps> = ({
                         {isMultiple && <Calendar date={secondDate} />}
                     </Flex>
                     <Flex justifyContent="space-between">
-                        {showClose && <Close onClick={() => handleToggle()}>Close</Close>}
-                        {showCleanDates && <Clear onClick={() => clearDates()}>Clear dates</Clear>}
-                        {showSave && <Save onClick={() => handleToggle()}>Save</Save>}
+                        {showClose && <Close onClick={() => handleToggle()}>{buttonsLabels.closeLabel || 'Close'}</Close>}
+                        {showCleanDates && <Clear onClick={() => clearDates()}>{buttonsLabels.clearLabel || 'Clear dates'}</Clear>}
+                        {showSave && <Save onClick={() => handleToggle()}>{buttonsLabels.saveLabel || 'Save'}</Save>}
                     </Flex>
                 </Container>
             </FocusTrap>
