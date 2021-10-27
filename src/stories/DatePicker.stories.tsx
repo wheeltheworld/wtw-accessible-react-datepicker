@@ -26,7 +26,7 @@ const Template: Story<DatePickerProps> = (args) => {
                     : 'Datepicker'}
             </button>
 
-            <Datepicker {...args} isOpen={open} handleToggle={toggle} onChange={setDate} value={date} />
+            <Datepicker {...args} showCleanDates showSave isOpen={open} handleToggle={toggle} onChange={setDate} value={date} />
         </>
     );
 };

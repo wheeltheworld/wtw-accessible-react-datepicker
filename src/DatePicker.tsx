@@ -50,11 +50,11 @@ const Container = styled.div<{
     ${({ custom, fullScreen }) => (custom ? (typeof custom === 'string' ? custom : custom(fullScreen)) : '')}
 `;
 
-const Flex = styled.div`
-    display: flex;
-    justify-content: center;
-    column-gap: 40px;
-`;
+const Flex = styled.div<{justifyContent?: string; columnGap?: string }>`
+    display: flex; 
+    justify-content: ${({ justifyContent }) => justifyContent};
+    column-gap: ${({ columnGap }) => columnGap};;
+`
 
 const Close = styled.button`
     text-decoration: underline;
@@ -64,6 +64,29 @@ const Close = styled.button`
     align-self: flex-end;
     font-size: 16px;
     padding: 9px 25px;
+`;
+
+const Clear = styled.button`
+    text-decoration: underline;
+    background: none;
+    border: none;
+    cursor: pointer;
+    align-self: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #007A87;
+`;
+
+const Save = styled.button`
+    background: #232323;
+    border: 1px solid transparent;
+    cursor: pointer;
+    padding: 9px 25px;
+    color: white;
+    border-radius: 100px;
+    align-self: center;
+    font-weight: semi-bold;
+    font-size: 1rem;
 `;
 
 export interface DatePickerProps {
@@ -78,6 +101,8 @@ export interface DatePickerProps {
     maxDate?: Day | 'today' | null;
     multipleSelect?: boolean;
     showClose?: boolean;
+    showSave?: boolean;
+    showCleanDates?: boolean;
 }
 
 const DatePicker: React.FC<DatePickerProps> = ({
@@ -86,12 +111,14 @@ const DatePicker: React.FC<DatePickerProps> = ({
     minDate,
     maxDate,
     value,
-    showClose = true,
+    showClose = false,
     onChange,
     months = defaultMonths,
     days = defaultDays,
     styles = defaultStyles,
     multipleSelect = true,
+    showSave = true,
+    showCleanDates = true
 }) => {
     const window = useWindowSize();
 
@@ -99,7 +126,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
 
     const isMultiple = !isMobile && multipleSelect;
 
-    const { selected, addDate, hovered, setHovered, focusable, setFocusable, force } = useDateSelector(
+    const { selected, addDate, hovered, setHovered, focusable, setFocusable, force, clearDates } = useDateSelector(
         value,
         multipleSelect,
     );
@@ -189,11 +216,15 @@ const DatePicker: React.FC<DatePickerProps> = ({
                     fullScreen={isMobile}
                 >
                     <Header months={currentMonths} />
-                    <Flex>
+                    <Flex justifyContent="center" columnGap="40px">
                         <Calendar date={date} />
                         {isMultiple && <Calendar date={secondDate} />}
                     </Flex>
-                    {showClose && <Close onClick={() => handleToggle()}>Close</Close>}
+                    <Flex justifyContent="space-between">
+                        {showClose && <Close onClick={() => handleToggle()}>Close</Close>}
+                        {showCleanDates && <Clear onClick={() => clearDates()}>Clear dates</Clear>}
+                        {showSave && <Save onClick={() => handleToggle()}>Save</Save>}
+                    </Flex>
                 </Container>
             </FocusTrap>
         </datepickerCtx.Provider>
