@@ -71,7 +71,7 @@ const Clear = styled.button`
     background: none;
     border: none;
     cursor: pointer;
-    align-self: center;
+    align-self: flex-end;
     font-size: 16px;
     font-weight: bold;
     color: #007A87;
@@ -84,8 +84,7 @@ const Save = styled.button`
     padding: 9px 25px;
     color: white;
     border-radius: 100px;
-    align-self: center;
-    font-weight: semi-bold;
+    font-weight: 800;
     font-size: 1rem;
 `;
 
