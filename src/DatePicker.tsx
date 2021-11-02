@@ -223,8 +223,8 @@ const DatePicker: React.FC<DatePickerProps> = ({
                     </Flex>
                     <Flex justifyContent="space-between">
                         {showClose && <Close onClick={() => handleToggle()}>{buttonsLabels.closeLabel || 'Close'}</Close>}
-                        {showCleanDates && <Clear onClick={() => clearDates()}>{buttonsLabels.clearLabel || 'Clear dates'}</Clear>}
-                        {showSave && <Save onClick={() => handleToggle()}>{buttonsLabels.saveLabel || 'Save'}</Save>}
+                        {showCleanDates && <Clear type="button" onClick={() => clearDates()}>{buttonsLabels.clearLabel || 'Clear dates'}</Clear>}
+                        {showSave && <Save type="button" onClick={() => handleToggle()}>{buttonsLabels.saveLabel || 'Save'}</Save>}
                     </Flex>
                 </Container>
             </FocusTrap>
