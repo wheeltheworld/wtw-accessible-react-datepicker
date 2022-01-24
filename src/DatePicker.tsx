@@ -219,7 +219,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
                     <Header months={currentMonths} />
                     <Flex justifyContent="center" columnGap="40px">
                         <Calendar date={date} />
-                        {isMultiple && <Calendar date={secondDate} />}
+                        {isMultiple && <Calendar date={secondDate}/>}
                     </Flex>
                     <Flex justifyContent="space-between">
                         {showClose && <Close onClick={() => handleToggle()}>{buttonsLabels.closeLabel || 'Close'}</Close>}

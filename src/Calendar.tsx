@@ -7,6 +7,10 @@ import Day from './Day';
 import { getDownDay, getLeftDay, getRightDay, getUpDay } from './utils/funcs/getNextKeyboardDays';
 import { datepickerCtx } from './utils/ctx';
 
+//35 is the number of date spaces that has 5 rows and 7 columns (days of the week)
+//After that a new row is needed to store the reminding dates
+const numberSpacesCalendar = 35;
+
 const Keys = {
     Up: 'ArrowUp',
     Down: 'ArrowDown',
@@ -16,12 +20,14 @@ const Keys = {
 
 interface DaysProps {
     date: IDay;
+    isMultiple?: boolean;
 }
 
-const Grid = styled.div<{ days?: boolean }>`
+const Grid = styled.div<{ days?: boolean, numberDays?: number}>`
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    ${({ days }) => (days ? `grid-template-rows: repeat(6, 1fr);` : '')}
+    ${({ days, numberDays }) => ((days && numberDays) ?  
+        `grid-template-rows: repeat(${(numberDays > numberSpacesCalendar ) ? '6' : '5'}, 1fr);` : '')}
     place-items: center;
 `;
 
@@ -34,7 +40,6 @@ const Calendar: React.FC<DaysProps> = ({ date }) => {
     const { days, months, styles, setFocusable, onNext, onPrevious } = useContext(datepickerCtx);
 
     const { month, year } = date;
-
     const handleKey = (e: React.KeyboardEvent<HTMLButtonElement>, day: number) => {
         if (!Object.values(Keys).includes(e.code)) return;
         e.preventDefault();
@@ -80,7 +85,7 @@ const Calendar: React.FC<DaysProps> = ({ date }) => {
                     </WeekDay>
                 ))}
             </Grid>
-            <Grid days>
+            <Grid days numberDays={calendar.calendar.length}>
                 {calendar.calendar.map((day, i) => (
                     <Day
                         day={{ day, month, year }}
