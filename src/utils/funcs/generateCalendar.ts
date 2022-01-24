@@ -21,7 +21,7 @@ export const generateMonthCalendar = (date: Day): Calendar => {
         days.push(i);
     }
 
-    // Add missing days at the beggining of the calendar
+    // Add missing days at the beginning of the calendar
     let missingSpots = (8 - ((day - weekDay) % 7)) % 7;
 
     for (let i = 0; i < missingSpots; i++) {
