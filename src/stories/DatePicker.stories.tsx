@@ -12,6 +12,7 @@ export default {
 
 const Template: Story<DatePickerProps> = (args) => {
     const [open, toggle] = useToggle(true);
+    const [multiple, toggleMultiple] = useToggle(true);
     const [date, setDate] = useState<SelectedDates>([null, null]);
     return (
         <>
@@ -25,8 +26,16 @@ const Template: Story<DatePickerProps> = (args) => {
           }`
                     : 'Datepicker'}
             </button>
+            <button onClick={() => toggleMultiple()}>toggle multiple</button>
 
-            <Datepicker {...args} isOpen={open} handleToggle={toggle} onChange={setDate} value={date} />
+            <Datepicker
+                {...args}
+                isOpen={open}
+                handleToggle={toggle}
+                onChange={setDate}
+                value={date}
+                multipleSelect={multiple}
+            />
         </>
     );
 };

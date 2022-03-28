@@ -50,11 +50,11 @@ const Container = styled.div<{
     ${({ custom, fullScreen }) => (custom ? (typeof custom === 'string' ? custom : custom(fullScreen)) : '')}
 `;
 
-const Flex = styled.div<{justifyContent?: string; columnGap?: string }>`
-    display: flex; 
+const Flex = styled.div<{ justifyContent?: string; columnGap?: string }>`
+    display: flex;
     justify-content: ${({ justifyContent }) => justifyContent};
-    column-gap: ${({ columnGap }) => columnGap};;
-`
+    column-gap: ${({ columnGap }) => columnGap}; ;
+`;
 
 const Close = styled.button`
     text-decoration: underline;
@@ -74,7 +74,7 @@ const Clear = styled.button`
     align-self: flex-end;
     font-size: 16px;
     font-weight: bold;
-    color: #007A87;
+    color: #007a87;
 `;
 
 const Save = styled.button`
@@ -102,7 +102,7 @@ export interface DatePickerProps {
     showClose?: boolean;
     showSave?: boolean;
     showCleanDates?: boolean;
-    buttonsLabels?: { closeLabel?: string; saveLabel?: string; clearLabel?: string }
+    buttonsLabels?: { closeLabel?: string; saveLabel?: string; clearLabel?: string };
 }
 
 const DatePicker: React.FC<DatePickerProps> = ({
@@ -119,7 +119,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
     multipleSelect = true,
     showSave = true,
     showCleanDates = true,
-    buttonsLabels = {closeLabel: 'Close', saveLabel: 'Save', clearLabel: 'Clear dates'}
+    buttonsLabels = { closeLabel: 'Close', saveLabel: 'Save', clearLabel: 'Clear dates' },
 }) => {
     const window = useWindowSize();
 
@@ -181,12 +181,14 @@ const DatePicker: React.FC<DatePickerProps> = ({
         handleToggle();
     });
 
-    const actualMaxDate = useMemo(() => (maxDate ? (maxDate === 'today' ? generateDay(new Date()) : maxDate) : null), [
-        maxDate,
-    ]);
-    const actualMinDate = useMemo(() => (minDate ? (minDate === 'today' ? generateDay(new Date()) : minDate) : null), [
-        minDate,
-    ]);
+    const actualMaxDate = useMemo(
+        () => (maxDate ? (maxDate === 'today' ? generateDay(new Date()) : maxDate) : null),
+        [maxDate],
+    );
+    const actualMinDate = useMemo(
+        () => (minDate ? (minDate === 'today' ? generateDay(new Date()) : minDate) : null),
+        [minDate],
+    );
 
     return isOpen ? (
         <datepickerCtx.Provider
@@ -219,12 +221,22 @@ const DatePicker: React.FC<DatePickerProps> = ({
                     <Header months={currentMonths} />
                     <Flex justifyContent="center" columnGap="40px">
                         <Calendar date={date} />
-                        {isMultiple && <Calendar date={secondDate}/>}
+                        {isMultiple && <Calendar date={secondDate} />}
                     </Flex>
                     <Flex justifyContent="space-between">
-                        {showClose && <Close onClick={() => handleToggle()}>{buttonsLabels.closeLabel || 'Close'}</Close>}
-                        {showCleanDates && <Clear type="button" onClick={() => clearDates()}>{buttonsLabels.clearLabel || 'Clear dates'}</Clear>}
-                        {showSave && <Save type="button" onClick={() => handleToggle()}>{buttonsLabels.saveLabel || 'Save'}</Save>}
+                        {showClose && (
+                            <Close onClick={() => handleToggle()}>{buttonsLabels.closeLabel || 'Close'}</Close>
+                        )}
+                        {showCleanDates && (
+                            <Clear type="button" onClick={() => clearDates()}>
+                                {buttonsLabels.clearLabel || 'Clear dates'}
+                            </Clear>
+                        )}
+                        {showSave && (
+                            <Save type="button" onClick={() => handleToggle()}>
+                                {buttonsLabels.saveLabel || 'Save'}
+                            </Save>
+                        )}
                     </Flex>
                 </Container>
             </FocusTrap>
