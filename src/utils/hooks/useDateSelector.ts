@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Day } from '../../types/Day';
 import { Tuple } from '../../types/Tuple';
 import { dayIsSooner } from '../funcs/dayIsSooner';
@@ -30,6 +30,12 @@ export const useDateSelector = (initial?: Tuple<Day | null, 1 | 2>, isMultiple =
             setSelected([day]);
         }
     };
+
+    useEffect(() => {
+        if (!isMultiple) {
+            setSelected([selected[0]]);
+        }
+    }, [selected, isMultiple]);
 
     /**
      * Will clear the dates when called
