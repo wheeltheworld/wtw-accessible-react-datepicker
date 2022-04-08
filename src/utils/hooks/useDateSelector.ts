@@ -35,7 +35,7 @@ export const useDateSelector = (initial?: Tuple<Day | null, 1 | 2>, isMultiple =
         if (!isMultiple) {
             setSelected([selected[0]]);
         }
-    }, [selected, isMultiple]);
+    }, [isMultiple]);
 
     /**
      * Will clear the dates when called
