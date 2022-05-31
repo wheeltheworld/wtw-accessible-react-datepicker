@@ -12,6 +12,16 @@ export const useDateSelector = (initial?: Tuple<Day | null, 1 | 2>, isMultiple =
 
     const addDate = (day: Day) => {
         if (isMultiple) {
+            if (selected[0] && selected[1]) {
+                if(JSON.stringify(day) === JSON.stringify(selected[1])) {
+                    return setSelected([selected[0], null]);
+                }
+                if(JSON.stringify(day) === JSON.stringify(selected[0])) {
+                    return setSelected([null, null]);
+                }
+                return setSelected([day, null]);
+            }
+
             if (!selected[0]) return setSelected([day, null]);
 
             if (JSON.stringify(day) === JSON.stringify(selected[0])) return setSelected([null, null]);

@@ -99,7 +99,7 @@ describe('useToggle()', () => {
         act(() => {
             result.current.addDate(third);
         });
-        expect(result.current.selected).toEqual([first, third]);
+        expect(result.current.selected).toEqual([third, null]);
     });
 
     it('should remove the second selected date if the date added is the same than the second', () => {
@@ -150,7 +150,7 @@ describe('useToggle()', () => {
         expect(result.current.selected).toEqual([null, null]);
     });
 
-    it('should change the first selected date if the date added is sooner than the first date', () => {
+    it('should replace the first date with a third date and remove the second one', () => {
         const { result } = renderHook(() => useDateSelector());
         const first: Day = {
             day: 12,
@@ -176,7 +176,7 @@ describe('useToggle()', () => {
         act(() => {
             result.current.addDate(third);
         });
-        expect(result.current.selected).toEqual([third, second]);
+        expect(result.current.selected).toEqual([third, null]);
     });
 
     it('should change the first selected date if the date added is sooner than the first date', () => {

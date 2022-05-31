@@ -28,7 +28,7 @@ const Circle = styled.div<{
         disabled
             ? `
       color: ${styles.disabled};
-      text-decoration: line-through;
+      font-style: italic;
 
       `
             : `&:hover {
