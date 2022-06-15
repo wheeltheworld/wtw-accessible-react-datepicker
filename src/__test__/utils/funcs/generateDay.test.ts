@@ -8,4 +8,12 @@ describe('generateDay()', () => {
             year: 2021,
         });
     });
+    it('should return the day without any timezone side effects', () => {
+        const dateInStringForm = new Date('2022-08-05T00:00:00.000Z');
+        expect(generateDay(dateInStringForm)).toEqual({
+            day: 5,
+            month: 8,
+            year: 2022,
+        });
+    });
 });
