@@ -18,9 +18,11 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "test": "jest --verbose --coverage",
-    "prepare": "rm -rf dist && tsc --project ./tsconfig.json",
-    "tsc": "tsc -p ./tsconfig.json"
+    "prepare": "rm -rf dist && tsc --project ./tsconfig.json"
   },
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/wheeltheworld/react-accessible-datepicker"
