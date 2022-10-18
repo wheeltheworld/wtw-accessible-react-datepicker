@@ -13,7 +13,7 @@
   "module": "dist/index.esm.js",
   "types": "src/index.d.ts",
   "scripts": {
-    "build": "yarn clean && rollup -c",
+    "build": "rm -rf dist && tsc --project ./tsconfig.json",
     "clean": "rimraf dist",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
