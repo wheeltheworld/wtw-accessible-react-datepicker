@@ -18,7 +18,7 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "test": "jest --verbose --coverage",
-    "prepare": "yarn clean && rollup -c"
+    "prepare": "rm -rf dist && tsc --project ./tsconfig.json"
   },
   "repository": {
     "type": "git",
