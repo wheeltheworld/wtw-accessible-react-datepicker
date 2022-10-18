@@ -17,7 +17,8 @@
     "clean": "rimraf dist",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "test": "jest --verbose --coverage"
+    "test": "jest --verbose --coverage",
+    "prepare": "yarn clean && rollup -c"
   },
   "repository": {
     "type": "git",
