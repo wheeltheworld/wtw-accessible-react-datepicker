@@ -13,12 +13,13 @@
   "module": "dist/index.esm.js",
   "types": "src/index.d.ts",
   "scripts": {
-    "build": "rm -rf dist && tsc --project ./tsconfig.json",
+    "build": "yarn clean && rollup -c",
     "clean": "rimraf dist",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "test": "jest --verbose --coverage",
-    "prepare": "rm -rf dist && tsc --project ./tsconfig.json"
+    "prepare": "rm -rf dist && tsc --project ./tsconfig.json",
+    "tsc": "tsc -p tsconfig.json"
   },
   "repository": {
     "type": "git",
