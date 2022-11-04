@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import styled from '@emotion/styled';
 import { Tuple } from './types/Tuple';
-
-import { ArrowBackIcon, ArrowForwardIcon } from 'wtw-icons/icons';
+import ArrowForwardIcon from 'wtw-icons/_icons/ArrowForward';
+import ArrowBackIcon from 'wtw-icons/_icons/ArrowBack';
 import { datepickerCtx } from './utils/ctx';
 
 interface HeaderProps {
