@@ -1,11 +1,14 @@
 import { Day } from '../../types/Day';
+import { fromMiliSecondsToDay } from './fromMiliSecondsToDay';
 import { generateDate } from './generateDate';
 
 /**
  * Returns the difference between two datepicker Days
  */
-export const differenceBetweenDays = (day1: Day | null, day2: Day | null) => {
+export const differenceBetweenDays = (day1: Day | null, day2: Day | null): number => {
     if (!day1 || !day2) return 0;
+
     const diffTime = Math.abs(generateDate(day1).valueOf() - generateDate(day2).valueOf());
-    return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+    return fromMiliSecondsToDay(diffTime);
 };
