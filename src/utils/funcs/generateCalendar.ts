@@ -13,7 +13,7 @@ interface Calendar {
  */
 export const generateMonthCalendar = (date: Day): Calendar => {
     const { year, month, day } = date;
-    const weekDay = generateDate(date).getDay();
+    const weekDay = generateDate(date).getUTCDay();
     const days: number[] = [];
 
     // Add all the days of the month
