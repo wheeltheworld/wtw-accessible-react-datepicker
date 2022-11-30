@@ -1,6 +1,8 @@
 import { Day } from '../../types/Day';
 
 /**
- *  gets a datepicker Day and returns a javascript Date
+ *  Transform a DatePicker's `Day` into a JS's `Date`
  */
-export const generateDate = (day: Day) => new Date(day.year, day.month - 1, day.day);
+export const generateDate = ({ year, month, day }: Day): Date =>
+    // Month in `Day` type are 1-based indexed
+    new Date(Date.UTC(year, month - 1, day, 0, 0, 0, 0));
