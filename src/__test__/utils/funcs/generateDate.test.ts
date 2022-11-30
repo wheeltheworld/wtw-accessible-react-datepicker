@@ -15,7 +15,7 @@ describe('generateDate', () => {
         expect(result.getUTCMonth()).toBe(month - 1);
     });
 
-    it.only('should set hour to 00', () => {
+    it('should set hour to 00', () => {
         const result = generateDate(day);
 
         expect(result.getUTCHours()).toBe(0);
