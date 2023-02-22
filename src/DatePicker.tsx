@@ -99,6 +99,7 @@ export interface DatePickerProps {
     minDate?: Day | 'today' | null;
     maxDate?: Day | 'today' | null;
     multipleSelect?: boolean;
+    autoClose?: boolean;
     showClose?: boolean;
     showSave?: boolean;
     showCleanDates?: boolean;
@@ -116,8 +117,9 @@ const DatePicker: React.FC<DatePickerProps> = ({
     months = defaultMonths,
     days = defaultDays,
     styles = defaultStyles,
+    autoClose = true,
     multipleSelect = true,
-    showSave = true,
+    showSave = false,
     showCleanDates = true,
     buttonsLabels = { closeLabel: 'Close', saveLabel: 'Save', clearLabel: 'Clear dates' },
 }) => {
@@ -132,12 +134,21 @@ const DatePicker: React.FC<DatePickerProps> = ({
         multipleSelect,
     );
 
+    const handleClose = () => {
+        if (multipleSelect && selected[1]) {
+            handleToggle();
+        } else if (!multipleSelect && selected[0] !== null) {
+            handleToggle();
+        }
+    };
+
     useEffect(() => {
         if (value) force(value);
     }, [value]);
 
     useEffect(() => {
         if (onChange) onChange(selected);
+        if (autoClose) handleClose();
     }, [selected]);
 
     const [date, setDate] = useState(selected[0] ? selected[0] : generateDay(new Date()));
@@ -171,6 +182,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
         if (isMultiple) {
             return [monthOne, monthTwo];
         }
+
         return [monthOne];
     }, [months, date, isMultiple]);
 
