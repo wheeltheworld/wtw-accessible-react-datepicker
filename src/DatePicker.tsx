@@ -134,7 +134,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
         multipleSelect,
     );
 
-    const handleClose = () => {
+    const handleClose: (val: SelectedDates) => void = () => {
         if (multipleSelect && selected[1]) {
             handleToggle();
         } else if (!multipleSelect && selected[0] !== null) {
@@ -148,7 +148,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
 
     useEffect(() => {
         if (onChange) onChange(selected);
-        if (autoClose) handleClose();
+        if (autoClose && selected[0] !== undefined) handleClose(selected);
     }, [selected]);
 
     const [date, setDate] = useState(selected[0] ? selected[0] : generateDay(new Date()));

@@ -23,11 +23,11 @@ interface DaysProps {
     isMultiple?: boolean;
 }
 
-const Grid = styled.div<{ days?: boolean; numberDays?: number }>`
+const Grid = styled.div<{ days?: boolean, numberDays?: number}>`
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    ${({ days, numberDays }) =>
-        days && numberDays ? `grid-template-rows: repeat(${numberDays > numberSpacesCalendar ? '6' : '5'}, 1fr);` : ''}
+    ${({ days, numberDays }) => ((days && numberDays) ?  
+        `grid-template-rows: repeat(${(numberDays > numberSpacesCalendar ) ? '6' : '5'}, 1fr);` : '')}
     place-items: center;
 `;
 
