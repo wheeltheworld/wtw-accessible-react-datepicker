@@ -8,3 +8,9 @@ export const generateDay = (date: Date): Day => ({
     month: date.getMonth() + 1,
     year: date.getFullYear(),
 });
+
+export const generateUTCDay = (date: Date): Day => ({
+    day: date.getUTCDate(),
+    month: date.getUTCMonth() + 1,
+    year: date.getUTCFullYear(),
+});
