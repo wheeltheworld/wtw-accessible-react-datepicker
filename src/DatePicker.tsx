@@ -50,8 +50,9 @@ const Container = styled.div<{
     ${({ custom, fullScreen }) => (custom ? (typeof custom === 'string' ? custom : custom(fullScreen)) : '')}
 `;
 
-const Flex = styled.div<{ justifyContent?: string; columnGap?: string }>`
+const Flex = styled.div<{ flexDirection?: string; justifyContent?: string; columnGap?: string }>`
     display: flex;
+    flex-direction: ${({ flexDirection }) => flexDirection};
     justify-content: ${({ justifyContent }) => justifyContent};
     column-gap: ${({ columnGap }) => columnGap}; ;
 `;
@@ -104,6 +105,8 @@ export interface DatePickerProps {
     showSave?: boolean;
     showCleanDates?: boolean;
     buttonsLabels?: { closeLabel?: string; saveLabel?: string; clearLabel?: string };
+    calendarOrientation?: 'horizontal' | 'vertical';
+    label?: string;
 }
 
 const DatePicker: React.FC<DatePickerProps> = ({
@@ -121,7 +124,9 @@ const DatePicker: React.FC<DatePickerProps> = ({
     multipleSelect = true,
     showSave = false,
     showCleanDates = true,
+    label = 'Select dates',
     buttonsLabels = { closeLabel: 'Close', saveLabel: 'Save', clearLabel: 'Clear dates' },
+    calendarOrientation = 'horizontal',
 }) => {
     const window = useWindowSize();
 
@@ -230,10 +235,26 @@ const DatePicker: React.FC<DatePickerProps> = ({
                     ref={datepicker}
                     fullScreen={isMobile}
                 >
-                    <Header months={currentMonths} />
-                    <Flex justifyContent="center" columnGap="40px">
-                        <Calendar date={date} />
-                        {isMultiple && <Calendar date={secondDate} />}
+                    <Header calendarOrientation={calendarOrientation} label={label} months={currentMonths} />
+                    <Flex
+                        columnGap="40px"
+                        justifyContent="center"
+                        flexDirection={calendarOrientation === 'horizontal' ? 'row' : 'column'}
+                    >
+                        <Calendar
+                            calendarOrientation={calendarOrientation}
+                            date={date}
+                            currentMonths={currentMonths}
+                            monthIndex={0}
+                        />
+                        {isMultiple && (
+                            <Calendar
+                                calendarOrientation={calendarOrientation}
+                                date={secondDate}
+                                currentMonths={currentMonths}
+                                monthIndex={1}
+                            />
+                        )}
                     </Flex>
                     <Flex justifyContent="space-between">
                         {showClose && (
