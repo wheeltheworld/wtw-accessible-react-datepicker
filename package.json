@@ -55,6 +55,6 @@
     "dependencies": {
         "@emotion/styled": "^11.3.0",
         "focus-trap-react": "^8.5.0",
-        "wtw-icons": "^1.17.0"
+        "wtw-icons": "^1.45.3"
     }
 }
