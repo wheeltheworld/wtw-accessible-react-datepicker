@@ -4,16 +4,31 @@ import { Tuple } from './types/Tuple';
 import ArrowForwardIcon from 'wtw-icons/_icons/ArrowForward';
 import ArrowBackIcon from 'wtw-icons/_icons/ArrowBack';
 import { datepickerCtx } from './utils/ctx';
+import { WTWIcon } from 'wtw-icons';
+import { DatePickerProps } from './DatePicker';
 
-interface HeaderProps {
+interface HeaderProps extends Required<Pick<DatePickerProps, 'calendarOrientation'>> {
     months: Tuple<string, 1 | 2>;
+    label?: string;
 }
 
 const Container = styled.div`
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    align-items: center;
     position: relative;
     padding: 10px 0;
+`;
+
+const ButtonContainer = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
+const CenterButton = styled.div<{ horizontalPosition?: string }>`
+    position: relative;
+    top: 10%;
+    right: ${({ horizontalPosition }) => horizontalPosition};
 `;
 
 const Button = styled.button`
@@ -27,45 +42,73 @@ const Button = styled.button`
     height: 40px;
     border-radius: 100%;
     outline: none;
-    border: 1px solid transparent;
-    position: absolute;
-    top: 0px;
-    right: 0;
-
-    &:first-child {
-        left: 0;
-    }
-
-    &:hover,
-    &:focus {
-        border: 1px solid #2f6fe4;
-    }
+    border: 1px solid black;
 `;
 
-const Month = styled.p`
-    font-weight: 600;
+const Label = styled.header`
+    font-weight: 550;
     margin: 0;
-    display: grid;
-    place-items: center;
+    font-size: 21px;
+    line-height: 28px;
+    margin-right: 10px;
 `;
 
-const Header: React.FC<HeaderProps> = ({ months }) => {
+const Gap = styled.div`
+    margin-left: 10px;
+    margin-right: 10px;
+`;
+
+const ArrowIcon: React.FC<{
+    calendarOrientation: 'horizontal' | 'vertical';
+    IconOnHorizontal?: React.ReactNode;
+    positionOnHorizontal?: string;
+    IconOnVertical?: React.ReactNode;
+    positionOnVertical?: string;
+}> = ({ calendarOrientation, IconOnHorizontal, positionOnHorizontal, IconOnVertical, positionOnVertical }) => {
+    return (
+        <CenterButton
+            horizontalPosition={calendarOrientation === 'horizontal' ? positionOnHorizontal : positionOnVertical}
+        >
+            {calendarOrientation === 'horizontal' ? IconOnHorizontal : IconOnVertical}
+        </CenterButton>
+    );
+};
+
+const Header: React.FC<HeaderProps> = ({ label, months, calendarOrientation }) => {
     const { onNext, onPrevious } = useContext(datepickerCtx);
     const isPair = months.length == 2;
     return (
         <Container>
-            <Button
-                onClick={() => onPrevious()}
-                aria-label={`Previous ${isPair ? 'pair of months' : 'month'}`}
-                type="button"
-            >
-                <ArrowBackIcon width="15px" height="15px" />
-            </Button>
-            <Month aria-live="polite">{months[0]}</Month>
-            {isPair && <Month aria-live="polite">{months[1]}</Month>}
-            <Button onClick={() => onNext()} aria-label={`Next ${isPair ? 'pair of months' : 'month'}`} type="button">
-                <ArrowForwardIcon width="15px" height="15px" />
-            </Button>
+            <Label>{label}</Label>
+            <ButtonContainer>
+                <Button
+                    onClick={() => onPrevious()}
+                    aria-label={`Previous ${isPair ? 'pair of months' : 'month'}`}
+                    type="button"
+                >
+                    <ArrowIcon
+                        calendarOrientation={calendarOrientation}
+                        IconOnHorizontal={<ArrowBackIcon width="15px" height="15px" />}
+                        positionOnHorizontal="5%"
+                        IconOnVertical={<WTWIcon icon="arrowup" width="15px" height="15px" />}
+                        positionOnVertical="0%"
+                    />
+                </Button>
+                <Gap />
+                <Button
+                    onClick={() => onNext()}
+                    aria-label={`Next ${isPair ? 'pair of months' : 'month'}`}
+                    type="button"
+                >
+                    <ArrowIcon
+                        calendarOrientation={calendarOrientation}
+                        IconOnHorizontal={<ArrowForwardIcon width="15px" height="15px" />}
+                        positionOnHorizontal="-10%"
+                        IconOnVertical={<WTWIcon icon="arrowdown" width="15px" height="15px" />}
+                        positionOnVertical="0%"
+                    />
+                </Button>
+            </ButtonContainer>
         </Container>
     );
 };
