@@ -9,34 +9,33 @@ export default {
     argTypes: {
         isOpen: {
             control: {
-                type: 'boolean'
+                type: 'boolean',
             },
-            defaultValue: true
+            defaultValue: true,
         },
         multipleSelect: {
             control: {
-                type: 'boolean'
-            }
+                type: 'boolean',
+            },
         },
         value: {
             control: { type: 'object' },
-            defaultValue: []
+            defaultValue: [],
         },
         minDate: {
-            control: { type: 'object' }
+            control: { type: 'object' },
         },
         maxDate: {
-            control: { type: 'object' }
+            control: { type: 'object' },
         },
-    }
+        handleToggle: {
+            control: { type: 'object' },
+        },
+    },
 } as Meta;
 
 const Template: Story<DatePickerProps> = (args) => {
-    return (
-        <Datepicker
-                {...args}
-            />
-    );
+    return <Datepicker {...args} handleToggle={() => {}} />;
 };
 
 export const Default = Template.bind({});

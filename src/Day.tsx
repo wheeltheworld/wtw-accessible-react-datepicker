@@ -24,7 +24,7 @@ const Circle = styled.div<{
     font-weight: 600;
     border: 1px solid transparent;
 
-    ${({ disabled, styles }) =>
+    ${({ selected, disabled, styles }) =>
         disabled
             ? `
       color: ${styles.disabled};
@@ -32,7 +32,7 @@ const Circle = styled.div<{
 
       `
             : `&:hover {
-        border: 1px solid ${styles.selected};
+        background-color: ${selected ? '' : '#D5E2FA'};
       }`}
 
     ${({ selected, styles, disabled }) =>
@@ -80,13 +80,6 @@ const Clickable = styled.button<{ selected: boolean; color: string }>`
     padding: 3.5px 0;
     outline: none;
     cursor: pointer;
-
-    ${({ selected, color }) =>
-        !selected
-            ? `&:focus .day {
-        border: 1px solid ${color};
-  }`
-            : ``}
 `;
 
 interface DayProps {
