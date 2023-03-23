@@ -32,3 +32,13 @@ const DatePickerContainer = () => {
   );
 };
 ```
+
+# How to contribute
+
+- Create a branch
+- Make your changes
+- Commit your changes
+- Run `npm version patch` or `npm version minor` or `npm version major` depending on the change
+- Push that version change
+- Open a PR and merge it
+- Create a new release on Github using a tag with the version that you pushed with the prefix 'v' and press the 'Generate release notes'
