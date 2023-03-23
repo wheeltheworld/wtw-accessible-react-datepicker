@@ -104,6 +104,7 @@ export interface DatePickerProps {
     showClose?: boolean;
     showSave?: boolean;
     showCleanDates?: boolean;
+    ignoreDefaultMobileIsMultipleBehavior?: boolean;
     buttonsLabels?: { closeLabel?: string; saveLabel?: string; clearLabel?: string };
     calendarOrientation?: 'horizontal' | 'vertical';
     label?: string;
@@ -127,12 +128,13 @@ const DatePicker: React.FC<DatePickerProps> = ({
     label = 'Select dates',
     buttonsLabels = { closeLabel: 'Close', saveLabel: 'Save', clearLabel: 'Clear dates' },
     calendarOrientation = 'horizontal',
+    ignoreDefaultMobileIsMultipleBehavior = false,
 }) => {
     const window = useWindowSize();
 
     const isMobile = (window.width || 757) < 756;
 
-    const isMultiple = !isMobile && multipleSelect;
+    const isMultiple = ignoreDefaultMobileIsMultipleBehavior ? multipleSelect : !isMobile && multipleSelect;
 
     const { selected, addDate, hovered, setHovered, focusable, setFocusable, force, clearDates } = useDateSelector(
         value,
