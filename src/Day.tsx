@@ -58,8 +58,9 @@ const DayContainer = styled.div<{
             ? ''
             : selected
             ? `
-    background: linear-gradient(${right ? '' : '-'}90deg, ${color} 0%, ${color} 50%, white 50%, white 100%);
-`
+    background: linear-gradient(${right ? '' : '-'}90deg, ${color} 0%, ${color} ${
+                  right ? '25' : '75'
+              }%, white 50%, white 100%);`
             : ''}
 
     ${({ between, color, disabled }) =>
@@ -77,6 +78,7 @@ const Clickable = styled.button<{ selected: boolean; color: string }>`
     background: none;
     border: none;
     height: 100%;
+    width: 100%;
     padding: 3.5px 0;
     outline: none;
     cursor: pointer;
