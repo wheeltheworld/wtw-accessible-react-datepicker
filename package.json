@@ -44,6 +44,7 @@
         "jest": "^26.6.3",
         "prettier": "^2.3.2",
         "react": "^17.0.2",
+        "react-dom": "^17.0.2",
         "rimraf": "^3.0.2",
         "rollup": "^2.33.3",
         "rollup-plugin-copy": "^3.3.0",
@@ -54,7 +55,6 @@
     },
     "dependencies": {
         "@emotion/styled": "^11.3.0",
-        "focus-trap-react": "^8.5.0",
-        "wtw-icons": "^1.45.3"
+        "focus-trap-react": "^8.5.0"
     }
 }
