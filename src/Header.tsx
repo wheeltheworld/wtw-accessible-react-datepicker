@@ -1,11 +1,9 @@
 import React, { useContext } from 'react';
 import styled from '@emotion/styled';
 import { Tuple } from './types/Tuple';
-import ArrowForwardIcon from 'wtw-icons/_icons/ArrowForward';
-import ArrowBackIcon from 'wtw-icons/_icons/ArrowBack';
 import { datepickerCtx } from './utils/ctx';
-import { WTWIcon } from 'wtw-icons';
 import { DatePickerProps } from './DatePicker';
+import { ArrowBackIcon, ArrowDownIcon, ArrowForwardIcon, ArrowUpIcon } from './Icons';
 
 interface HeaderProps extends Required<Pick<DatePickerProps, 'calendarOrientation'>> {
     months: Tuple<string, 1 | 2>;
@@ -90,7 +88,7 @@ const Header: React.FC<HeaderProps> = ({ label, months, calendarOrientation }) =
                         calendarOrientation={calendarOrientation}
                         IconOnHorizontal={<ArrowBackIcon width="15px" height="15px" />}
                         positionOnHorizontal="5%"
-                        IconOnVertical={<WTWIcon icon="arrowup" width="15px" height="15px" />}
+                        IconOnVertical={<ArrowUpIcon width="15px" height="15px" />}
                         positionOnVertical="0%"
                     />
                 </Button>
@@ -104,7 +102,7 @@ const Header: React.FC<HeaderProps> = ({ label, months, calendarOrientation }) =
                         calendarOrientation={calendarOrientation}
                         IconOnHorizontal={<ArrowForwardIcon width="15px" height="15px" />}
                         positionOnHorizontal="-10%"
-                        IconOnVertical={<WTWIcon icon="arrowdown" width="15px" height="15px" />}
+                        IconOnVertical={<ArrowDownIcon width="15px" height="15px" />}
                         positionOnVertical="0%"
                     />
                 </Button>
